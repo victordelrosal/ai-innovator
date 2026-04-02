@@ -1860,7 +1860,7 @@ function updateInView(ci) {
   items.forEach((el, i) => {
     const itemCenterY = i * r.itemH + r.itemH / 2 + reelTop;
     const dist = Math.abs(itemCenterY - centerY);
-    if (dist < r.itemH * 0.6) {
+    if (dist < r.itemH * 0.45) {
       el.classList.add('in-view');
     } else {
       el.classList.remove('in-view');
