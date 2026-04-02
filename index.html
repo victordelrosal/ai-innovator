@@ -1083,11 +1083,20 @@
     color: var(--text-dim);
     margin-bottom: 14px;
   }
-  .showcase-scroll {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 12px;
+  .showcase-track {
+    position: relative;
+    overflow: hidden;
   }
+  .showcase-scroll {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 0;
+  }
+  .showcase-scroll::-webkit-scrollbar { display: none; }
   .showcase-item {
     display: flex;
     flex-direction: column;
@@ -1095,6 +1104,8 @@
     gap: 10px;
     text-decoration: none;
     transition: transform 0.25s;
+    flex: 0 0 calc((100% - 98px) / 8);
+    min-width: 100px;
   }
   .showcase-item:hover { transform: translateY(-6px); }
   .showcase-thumb {
@@ -1134,6 +1145,43 @@
     transition: color 0.2s;
   }
   .showcase-item:hover .showcase-name { color: var(--text); }
+
+  /* Glassmorphic chevron buttons */
+  .showcase-chevron {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-60%);
+    z-index: 12;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(20, 20, 30, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .showcase-chevron.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .showcase-chevron:hover {
+    background: rgba(124, 77, 255, 0.25);
+    border-color: rgba(124, 77, 255, 0.4);
+    color: #fff;
+    box-shadow: 0 4px 24px rgba(124, 77, 255, 0.2);
+  }
+  .showcase-chevron--left { left: -4px; }
+  .showcase-chevron--right { right: -4px; }
 
   /* Mobile spin button (hidden on desktop) */
   .spin-btn-mobile {
@@ -1233,9 +1281,9 @@
     .cards-grid { grid-template-columns: 1fr; gap: 16px; }
     .result-card { min-height: 140px; padding: 24px 20px; }
 
-    .showcase-scroll {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+    .showcase-item {
+      flex: 0 0 calc((100% - 30px) / 4);
+      min-width: 80px;
     }
     .showcase-thumb { border-radius: 10px; }
     .showcase-name { font-size: 0.65rem; }
@@ -1257,7 +1305,7 @@
     right: 16px;
     z-index: 10;
     font-size: 0.65rem;
-    color: rgba(136, 136, 160, 0.35);
+    color: rgba(136, 136, 160, 0.47);
     letter-spacing: 0.06em;
     font-weight: 400;
   }
@@ -1349,55 +1397,65 @@
 
   <div class="showcase">
     <div class="showcase-label">Built with The AI Innovator</div>
-    <div class="showcase-scroll">
-      <a class="showcase-item" href="https://victordelrosal.com/sivuno/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/sivuno.jpg" alt="Sivuno" loading="lazy">
-        </div>
-        <span class="showcase-name">Sivuno</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/groundsense-project/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/groundsense.jpg" alt="GroundSense" loading="lazy">
-        </div>
-        <span class="showcase-name">GroundSense</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/tidewatch/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/tidewatch.jpg" alt="TideWatch" loading="lazy">
-        </div>
-        <span class="showcase-name">TideWatch</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/milpa/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/milpa.jpg" alt="Milpa" loading="lazy">
-        </div>
-        <span class="showcase-name">Milpa</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/chromaroot/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/chromaroot.jpg" alt="ChromaRoot" loading="lazy">
-        </div>
-        <span class="showcase-name">ChromaRoot</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/nutrir/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/nutrir.jpg" alt="Nutrir" loading="lazy">
-        </div>
-        <span class="showcase-name">Nutrir</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/intersect/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/intersect.jpg" alt="Intersect" loading="lazy">
-        </div>
-        <span class="showcase-name">Intersect</span>
-      </a>
-      <a class="showcase-item" href="https://victordelrosal.com/luna-app/" target="_blank">
-        <div class="showcase-thumb">
-          <img src="thumbs/luna.jpg" alt="Luna" loading="lazy">
-        </div>
-        <span class="showcase-name">Luna</span>
-      </a>
+    <div class="showcase-track">
+      <button class="showcase-chevron showcase-chevron--left" id="chevronLeft" onclick="scrollShowcase(-1)">&#8249;</button>
+      <button class="showcase-chevron showcase-chevron--right" id="chevronRight" onclick="scrollShowcase(1)">&#8250;</button>
+      <div class="showcase-scroll" id="showcaseScroll">
+        <a class="showcase-item" href="https://victordelrosal.com/sivuno/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/sivuno.jpg" alt="Sivuno" loading="lazy">
+          </div>
+          <span class="showcase-name">Sivuno</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/groundsense-project/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/groundsense.jpg" alt="GroundSense" loading="lazy">
+          </div>
+          <span class="showcase-name">GroundSense</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/tidewatch/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/tidewatch.jpg" alt="TideWatch" loading="lazy">
+          </div>
+          <span class="showcase-name">TideWatch</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/milpa/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/milpa.jpg" alt="Milpa" loading="lazy">
+          </div>
+          <span class="showcase-name">Milpa</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/chromaroot/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/chromaroot.jpg" alt="ChromaRoot" loading="lazy">
+          </div>
+          <span class="showcase-name">ChromaRoot</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/nutrir/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/nutrir.jpg" alt="Nutrir" loading="lazy">
+          </div>
+          <span class="showcase-name">Nutrir</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/intersect/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/intersect.jpg" alt="Intersect" loading="lazy">
+          </div>
+          <span class="showcase-name">Intersect</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/luna-app/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/luna.jpg" alt="Luna" loading="lazy">
+          </div>
+          <span class="showcase-name">Luna</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/terramemoire/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/terramemoire.jpg" alt="TerraMemoire" loading="lazy">
+          </div>
+          <span class="showcase-name">TerraMemoire</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -2227,7 +2285,7 @@ function checkAllSelected() {
 function generatePrompt() {
   const [country, fruit, animal, action, wildCard] = selections;
 
-  const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one.
+  const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one. IMPORTANT: Save every step's output as a separate file in the project folder so the full creative trail is preserved (see step h for the file structure).
 
 (a) Based on these parameters:
 
@@ -2251,7 +2309,18 @@ write a short story in a single paragraph.
 
 (g) Design a very professional business plan and a marketing campaign. Pitch this to investors (including reps from YCombinator, Tech Stars, Dogpatch Labs, and Blackrock Capital). Create the slides for this (html) and open them in a style aligned with the landing page. The slides must be visually striking, not text-heavy: use bold single-line statements, large hero numbers, real-world photos (via Unsplash or Pexels URLs), simple data visualisations built in CSS, and pull the same colour palette, typography, and design language from the landing page. Each slide should feel like a full-bleed magazine spread, not a bullet-point document. Minimise words per slide; maximise visual impact. When relevant, add progressive reveal of key elements within slides. Title the last slide 'Lessons Learned' and write 6 or 7 bullet points reflecting on the whole experience. Give it a favicon.
 
-(h) Create a local project folder for all and commit to corresponding GitHub repository then publish to a live GitHub Page and open it. Give it a favicon. (Skip this step only if you do not have these skills or permissions).`;
+(h) Create a local project folder for all deliverables. Save each step as a separate file so the full innovation trail is preserved:
+
+  01-story.md          (the short story from step a)
+  02-research-question.md  (the research question from step b)
+  03-problem-statement.md  (the problem statement from step c)
+  04-solution-design.md    (the solution design from step d)
+  05-prototype.md          (prototype and design specs from step e)
+  index.html               (the landing page from step f)
+  pitch.html               (the pitch deck from step g)
+  07-business-plan.md      (the business plan and marketing campaign from step g)
+
+Commit to corresponding GitHub repository then publish to a live GitHub Page and open it. Give it a favicon. (Skip this step only if you do not have these skills or permissions).`;
 
   // Store for modal access
   window._generatedPrompt = prompt;
@@ -2436,7 +2505,7 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
       <div class="step-marker">h</div>
       <div class="step-content">
         <div class="step-title">Publish Online</div>
-        <div class="step-desc">Organise all deliverables into a project folder. Publish the landing page and pitch deck to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
+        <div class="step-desc">Organise all deliverables into a project folder. Save each step as a separate file (01-story.md, 02-research-question.md, 03-problem-statement.md, 04-solution-design.md, 05-prototype.md, index.html, pitch.html, 07-business-plan.md) so the full innovation trail is preserved. Publish to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
         <span class="step-tag tag-deliver">Deliver</span>
       </div>
     </div>
@@ -2562,6 +2631,32 @@ function goBack() {
     document.getElementById('goSection').classList.add('visible');
   }
 }
+
+// Showcase chevron scroll
+function scrollShowcase(dir) {
+  const el = document.getElementById('showcaseScroll');
+  const item = el.querySelector('.showcase-item');
+  if (!item) return;
+  const scrollAmt = (item.offsetWidth + 14) * 2;
+  el.scrollBy({ left: dir * scrollAmt, behavior: 'smooth' });
+}
+
+function updateChevrons() {
+  const el = document.getElementById('showcaseScroll');
+  if (!el) return;
+  const left = document.getElementById('chevronLeft');
+  const right = document.getElementById('chevronRight');
+  left.classList.toggle('visible', el.scrollLeft > 10);
+  right.classList.toggle('visible', el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('showcaseScroll');
+  if (el) {
+    el.addEventListener('scroll', updateChevrons);
+    setTimeout(updateChevrons, 200);
+  }
+});
 
 // Page views counter (counterapi.dev - free, no signup)
 async function trackPageView() {
