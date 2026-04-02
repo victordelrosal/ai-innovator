@@ -6,6 +6,11 @@
 <title>The AI Innovator</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<!-- Navbar dependencies from main site -->
+<link rel="stylesheet" href="https://victordelrosal.com/css/style.css" id="main-site-css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://victordelrosal.com/js/supabase-config.js"></script>
+<script src="https://victordelrosal.com/js/supabase-client.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -38,7 +43,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    padding: 20px 20px 40px 20px;
+    padding: 100px 20px 40px 20px;
     position: relative;
   }
 
@@ -981,7 +986,7 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px);
-    z-index: 1000;
+    z-index: 1100;
     justify-content: center;
     align-items: center;
     padding: 24px;
@@ -1066,7 +1071,7 @@
   /* Showcase */
   .showcase {
     width: 100%;
-    margin-top: 32px;
+    margin-top: 52px;
     position: relative;
     z-index: 10;
   }
@@ -1094,7 +1099,7 @@
   .showcase-item:hover { transform: translateY(-6px); }
   .showcase-thumb {
     width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3 / 3.6;
     border-radius: 14px;
     overflow: hidden;
     border: 1px solid var(--border);
@@ -1154,23 +1159,40 @@
 
   /* Back / Reset */
   .reset-btn {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 36px;
+    position: relative;
+    background: none;
+    border: none;
+    padding: 12px;
     color: var(--text-dim);
     font-family: inherit;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.25s, transform 0.25s;
     cursor: pointer;
     transition: all 0.25s;
     letter-spacing: 0.04em;
   }
   .reset-btn:hover {
-    border-color: var(--accent);
-    color: var(--text);
-    background: rgba(124, 77, 255, 0.08);
-    box-shadow: 0 0 16px rgba(124, 77, 255, 0.1);
+    color: var(--accent);
+    transform: translateX(-3px);
+  }
+  .reset-btn .back-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -22px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .reset-btn:hover .back-label {
+    opacity: 1;
   }
 
   /* Responsive */
@@ -1230,6 +1252,10 @@
 </style>
 </head>
 <body>
+
+<!-- Navbar from main site (victordelrosal.com) -->
+<div id="navbar-container" data-active-link="none"></div>
+<script src="https://victordelrosal.com/js/navbar.js"></script>
 
 <!-- Dynamic spotlight background -->
 <div class="bg-spotlights">
@@ -1357,7 +1383,7 @@
     </div>
   </div>
 
-  <button class="reset-btn" onclick="goBack()">Go Back</button>
+  <button class="reset-btn" onclick="goBack()" aria-label="Go back">&#8592;<span class="back-label">Go back</span></button>
 </div>
 
 <!-- Modal -->
