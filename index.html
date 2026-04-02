@@ -1959,9 +1959,13 @@ function pullLever() {
   setTimeout(() => spinAll(), 250);
 }
 
+const spinSound = new Audio('spin.mp3');
+
 function spinAll() {
   if (spinning) return;
   spinning = true;
+  spinSound.currentTime = 0;
+  spinSound.play().catch(() => {});
 
   const wrapper = document.getElementById('leverWrapper');
   wrapper.classList.add('disabled');
