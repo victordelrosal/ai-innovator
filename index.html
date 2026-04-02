@@ -1085,7 +1085,6 @@
   }
   .showcase-track {
     position: relative;
-    overflow: hidden;
   }
   .showcase-scroll {
     display: flex;
@@ -1094,7 +1093,7 @@
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 4px 0;
+    padding: 4px 0 4px 0;
   }
   .showcase-scroll::-webkit-scrollbar { display: none; }
   .showcase-item {
@@ -1104,8 +1103,7 @@
     gap: 10px;
     text-decoration: none;
     transition: transform 0.25s;
-    flex: 0 0 calc((100% - 98px) / 8);
-    min-width: 100px;
+    flex: 0 0 140px;
   }
   .showcase-item:hover { transform: translateY(-6px); }
   .showcase-thumb {
@@ -1282,8 +1280,7 @@
     .result-card { min-height: 140px; padding: 24px 20px; }
 
     .showcase-item {
-      flex: 0 0 calc((100% - 30px) / 4);
-      min-width: 80px;
+      flex: 0 0 100px;
     }
     .showcase-thumb { border-radius: 10px; }
     .showcase-name { font-size: 0.65rem; }
@@ -1297,6 +1294,118 @@
   .dropdown::-webkit-scrollbar, .prompt-box::-webkit-scrollbar { width: 6px; }
   .dropdown::-webkit-scrollbar-track, .prompt-box::-webkit-scrollbar-track { background: transparent; }
   .dropdown::-webkit-scrollbar-thumb, .prompt-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Flip-clock countdown timer */
+  .flip-timer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 8px;
+  }
+  .flip-timer-hint {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 6px;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+  .flip-timer:hover + .flip-timer-hint,
+  .flip-timer.running + .flip-timer-hint { opacity: 0; }
+  .flip-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .flip-card {
+    position: relative;
+    width: 72px;
+    height: 88px;
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg,
+        #3a3a42 0%,
+        #2c2c34 48%,
+        #28282f 50%,
+        #2c2c34 52%,
+        #252530 100%);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  /* Horizontal split line */
+  .flip-card::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1.5px;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+    z-index: 2;
+  }
+  /* Subtle top-half lighter shade */
+  .flip-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px 8px 0 0;
+    z-index: 1;
+  }
+  .flip-digits {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #e8e8ec;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    font-variant-numeric: tabular-nums;
+  }
+  .flip-label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #c8960c;
+  }
+  .flip-separator {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #555;
+    margin-top: -10px;
+    line-height: 1;
+  }
+  .flip-timer.running .flip-separator {
+    animation: blinkSep 1s step-end infinite;
+  }
+  @keyframes blinkSep {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  .flip-timer.expired .flip-digits {
+    color: #ff5252;
+  }
+  .flip-timer.paused .flip-digits {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 640px) {
+    .flip-card { width: 56px; height: 68px; border-radius: 6px; }
+    .flip-digits { font-size: 2.4rem; }
+    .flip-separator { font-size: 1.8rem; }
+    .flip-label { font-size: 0.48rem; }
+  }
 
   /* Page views footer */
   .page-views-footer {
@@ -1395,6 +1504,21 @@
     </div>
   </div>
 
+  <div style="display:flex;flex-direction:column;align-items:center;margin-top:24px;">
+    <div class="flip-timer" id="flipTimer" onclick="toggleTimer()">
+      <div class="flip-panel">
+        <div class="flip-card"><span class="flip-digits" id="timerMin">12</span></div>
+        <span class="flip-label">Minutes</span>
+      </div>
+      <span class="flip-separator">:</span>
+      <div class="flip-panel">
+        <div class="flip-card"><span class="flip-digits" id="timerSec">00</span></div>
+        <span class="flip-label">Seconds</span>
+      </div>
+    </div>
+    <div class="flip-timer-hint">Click to start</div>
+  </div>
+
   <div class="showcase">
     <div class="showcase-label">Built with The AI Innovator</div>
     <div class="showcase-track">
@@ -1454,6 +1578,24 @@
             <img src="thumbs/terramemoire.jpg" alt="TerraMemoire" loading="lazy">
           </div>
           <span class="showcase-name">TerraMemoire</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/duyog/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/duyog.jpg" alt="Duyog" loading="lazy">
+          </div>
+          <span class="showcase-name">Duyog</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/marshall-islands-project/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/marshall-islands.jpg" alt="Marshall Islands Project" loading="lazy">
+          </div>
+          <span class="showcase-name">Marshall Islands</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/tidewise-pacific/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/tidewise-pacific.jpg" alt="TideWise Pacific" loading="lazy">
+          </div>
+          <span class="showcase-name">TideWise Pacific</span>
         </a>
       </div>
     </div>
@@ -2337,6 +2479,7 @@ Commit to corresponding GitHub repository then publish to a live GitHub Page and
     goBtn.classList.remove('pressed');
     goBtn.style.pointerEvents = '';
     window._generatedBrief = buildBriefHTML(country, fruit, animal, action, wildCard);
+    setTimeout(updateChevrons, 100);
   }, 650);
 }
 
@@ -2630,6 +2773,85 @@ function goBack() {
   if (selections.every(s => s !== null)) {
     document.getElementById('goSection').classList.add('visible');
   }
+  // Reset timer
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = TIMER_DURATION;
+  updateTimerDisplay();
+  const el = document.getElementById('flipTimer');
+  el.classList.remove('running', 'paused', 'expired');
+}
+
+// Countdown timer
+let timerInterval = null;
+let timerSeconds = 12 * 60;
+let timerRunning = false;
+const TIMER_DURATION = 12 * 60;
+
+function padTwo(n) { return String(n).padStart(2, '0'); }
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  document.getElementById('timerMin').textContent = padTwo(m);
+  document.getElementById('timerSec').textContent = padTwo(s);
+}
+
+function toggleTimer() {
+  const el = document.getElementById('flipTimer');
+
+  if (timerSeconds <= 0) {
+    // Reset
+    timerSeconds = TIMER_DURATION;
+    updateTimerDisplay();
+    el.classList.remove('expired', 'running', 'paused');
+    timerRunning = false;
+    return;
+  }
+
+  if (timerRunning) {
+    // Pause
+    clearInterval(timerInterval);
+    timerRunning = false;
+    el.classList.remove('running');
+    el.classList.add('paused');
+  } else {
+    // Start / resume
+    el.classList.remove('paused');
+    el.classList.add('running');
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      updateTimerDisplay();
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        el.classList.remove('running');
+        el.classList.add('expired');
+        playAlarm();
+      }
+    }, 1000);
+  }
+}
+
+function playAlarm() {
+  // Generate a simple alarm tone using Web Audio API
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const freqs = [880, 0, 880, 0, 880, 0, 1760];
+  const dur = 0.15;
+  freqs.forEach((f, i) => {
+    if (f === 0) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = f;
+    gain.gain.value = 0.08;
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * dur + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime + i * dur);
+    osc.stop(ctx.currentTime + i * dur + dur);
+  });
 }
 
 // Showcase chevron scroll
