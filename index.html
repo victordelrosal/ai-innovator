@@ -508,6 +508,9 @@
     pointer-events: none;
     opacity: 0.5;
   }
+  .lever-wrapper.disabled .lever-arm-assembly {
+    animation: none;
+  }
 
   /* Steel mounting bracket on the "machine" side */
   .lever-mount {
@@ -594,9 +597,19 @@
     transform-origin: 50% 93px;
     transition: none;
     z-index: 1;
+    animation: leverNudge 3.2s ease-in-out infinite;
   }
   .lever-arm-assembly.pulled {
     animation: leverPull3D 1s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  }
+  @keyframes leverNudge {
+    0%, 100% { transform: rotate(0deg); }
+    60% { transform: rotate(0deg); }
+    64% { transform: rotate(2.5deg); }
+    68% { transform: rotate(-2deg); }
+    71% { transform: rotate(1.5deg); }
+    74% { transform: rotate(-0.8deg); }
+    77% { transform: rotate(0deg); }
   }
 
   @keyframes leverPull3D {
