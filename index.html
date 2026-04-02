@@ -1249,6 +1249,19 @@
   .dropdown::-webkit-scrollbar, .prompt-box::-webkit-scrollbar { width: 6px; }
   .dropdown::-webkit-scrollbar-track, .prompt-box::-webkit-scrollbar-track { background: transparent; }
   .dropdown::-webkit-scrollbar-thumb, .prompt-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Page views footer */
+  .page-views-footer {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    padding: 32px 0 8px 0;
+    font-size: 0.7rem;
+    color: rgba(136, 136, 160, 0.4);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+  }
 </style>
 </head>
 <body>
@@ -1391,6 +1404,8 @@
 
   <button class="reset-btn" onclick="goBack()" aria-label="Go back">&#8592;<span class="back-label">Go back</span></button>
 </div>
+
+<div class="page-views-footer" id="pageViewsFooter"></div>
 
 <!-- Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
@@ -2548,6 +2563,20 @@ function goBack() {
     document.getElementById('goSection').classList.add('visible');
   }
 }
+
+// Page views counter (counterapi.dev - free, no signup)
+async function trackPageView() {
+  try {
+    const res = await fetch('https://api.counterapi.dev/v1/ai-innovator/page-views/up');
+    const data = await res.json();
+    if (data && data.count) {
+      document.getElementById('pageViewsFooter').textContent = `${data.count.toLocaleString()} views`;
+    }
+  } catch (e) {
+    // Silently fail
+  }
+}
+trackPageView();
 
 // Init
 buildSlots();
