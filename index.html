@@ -1041,6 +1041,28 @@
     background: #fff;
   }
 
+  /* Mobile spin button (hidden on desktop) */
+  .spin-btn-mobile {
+    display: none;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    background: linear-gradient(180deg, #7c4dff 0%, #5a2dcc 100%);
+    border: none;
+    border-radius: 14px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .spin-btn-mobile:active {
+    transform: scale(0.96);
+  }
+
   /* Back / Reset */
   .reset-btn {
     background: var(--surface2);
@@ -1070,6 +1092,7 @@
 
     .machine-row { flex-direction: column; gap: 12px; }
     .lever-wrapper { display: none; }
+    .spin-btn-mobile { display: block; }
 
     .slots-grid {
       grid-template-columns: repeat(5, 1fr);
@@ -1164,6 +1187,8 @@
     </div>
   </div>
 
+  <button class="spin-btn-mobile" id="spinBtnMobile" onclick="pullLever()">🎰 Spin</button>
+
   <div class="go-section" id="goSection">
     <div class="selections-preview" id="selectionsPreview"></div>
     <button class="go-btn" id="goBtn" onclick="generatePrompt()">Go</button>
@@ -1189,7 +1214,7 @@
     </div>
   </div>
 
-  <button class="reset-btn" onclick="resetAll()">Start Over</button>
+  <button class="reset-btn" onclick="goBack()">Go Back</button>
 </div>
 
 <!-- Modal -->
@@ -2094,7 +2119,8 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
   .intro { font-size: 20px; line-height: 1.7; color: #333; margin-bottom: 28px; }
 
   .steps { flex: 1; display: flex; flex-direction: column; gap: 18px; }
-  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step { display: flex; gap: 16px; align-items: flex-start; break-inside: avoid; }
+  .page-spacer { height: 60px; break-before: page; }
   .step-marker { width: 43px; height: 43px; border-radius: 50%; background: #1a1a2e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
   .step-content { flex: 1; }
   .step-title { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
@@ -2181,6 +2207,7 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
         <span class="step-tag tag-research">Research</span>
       </div>
     </div>
+    <div class="page-spacer"></div>
     <div class="step">
       <div class="step-marker">d</div>
       <div class="step-content">
@@ -2335,25 +2362,13 @@ function exportBriefPdf() {
   frame.srcdoc = briefWithScript;
 }
 
-function resetAll() {
-  selections.fill(null);
+function goBack() {
   document.getElementById('mainView').style.display = 'flex';
   document.getElementById('promptView').style.display = 'none';
-  document.getElementById('goSection').classList.remove('visible');
-
-  reels.forEach((r, ci) => {
-    r.win.classList.remove('locked', 'spinning');
-    const offset = Math.floor(Math.random() * CATEGORIES[ci].items.length);
-    const centerOffset = (r.winH / 2) - (r.itemH / 2);
-    r.reel.style.top = `${centerOffset - offset * r.itemH}px`;
-
-    const input = document.getElementById(`filter-${ci}`);
-    input.value = '';
-    input.classList.remove('has-selection');
-    filterDropdown(ci, '');
-  });
-  updateAllInView();
-  document.getElementById('centerBar').classList.remove('all-locked');
+  // Preserve selections and reel positions; user can spin again or tweak
+  if (selections.every(s => s !== null)) {
+    document.getElementById('goSection').classList.add('visible');
+  }
 }
 
 // Init
