@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The AI Innovator</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -1046,18 +1047,45 @@
 
   /* Responsive */
   @media (max-width: 640px) {
+    .container { padding: 16px 12px; }
+    .header h1 { font-size: 2.2rem; }
+    .header p { font-size: 0.95rem; }
+
+    .machine-row { flex-direction: column; gap: 12px; }
+    .lever-wrapper { display: none; }
+
     .slots-grid {
       grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
+      gap: 4px;
     }
-    .slot-window { height: 180px; }
-    .slot-item { font-size: 2.5rem; height: 60px; }
-    .slot-item { height: 60px; border-bottom: 1px solid rgba(60, 60, 80, 0.12); border-top: 1px solid rgba(0, 0, 0, 0.25); }
-    .go-btn { width: 240px; height: 72px; font-size: 1.8rem; border-radius: 36px; }
-    .selections-preview { font-size: 2rem; }
+    .slot-label { font-size: 0.6rem; letter-spacing: 0.05em; }
+    .slot-window { height: 140px; }
+    .slot-item { font-size: 2rem; height: 47px; }
+    .slot-item { border-bottom: 1px solid rgba(60, 60, 80, 0.12); border-top: 1px solid rgba(0, 0, 0, 0.25); }
+
+    .filter-input {
+      font-size: 0.65rem;
+      padding: 8px 6px;
+      text-overflow: ellipsis;
+    }
+    .filter-input::placeholder { font-size: 0.6rem; }
+
+    .dropdown {
+      min-width: 160px;
+      left: 0;
+      transform: none;
+    }
+
+    .go-btn { width: 100%; max-width: 300px; height: 64px; font-size: 1.6rem; border-radius: 32px; }
+    .selections-preview { font-size: 1.6rem; gap: 4px; }
+
     .cards-grid { grid-template-columns: 1fr; gap: 16px; }
-    .result-card { min-height: 160px; }
-    .modal-content { max-height: 90vh; }
+    .result-card { min-height: 140px; padding: 24px 20px; }
+
+    .modal-content { max-height: 92vh; max-width: 100%; border-radius: 14px; }
+    .modal-body--brief iframe { height: 60vh; }
+    .modal-header { padding: 16px; }
+    .modal-body { padding: 16px; }
   }
 
   /* Scrollbar */
@@ -1160,6 +1188,14 @@
           </svg>
           <svg id="modalCheckIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
             <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+        <button class="modal-copy" id="modalPdfBtn" onclick="exportBriefPdf()" style="display:none;">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <polyline points="9 15 12 18 15 15"/>
           </svg>
         </button>
         <button class="modal-close" onclick="closeModal()">
@@ -2054,6 +2090,24 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
   .footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
   .footer-left { font-size: 17px; color: #999; }
   .footer-right { font-size: 17px; color: #999; font-style: italic; }
+
+  @media (max-width: 640px) {
+    body { padding: 24px 16px 24px 16px; }
+    .header { flex-direction: column; gap: 12px; }
+    .header-left h1 { font-size: 24px; }
+    .header-left .subtitle { font-size: 15px; }
+    .header-right { text-align: left; font-size: 14px; line-height: 1.5; }
+    .params-row { gap: 8px; }
+    .param-chip { min-width: 0; padding: 10px 6px; flex: 0 0 calc(50% - 4px); }
+    .param-emoji { font-size: 28px; }
+    .param-text { font-size: 12px; }
+    .intro { font-size: 16px; }
+    .step-marker { width: 32px; height: 32px; font-size: 15px; }
+    .step-title { font-size: 16px; }
+    .step-desc { font-size: 14px; }
+    .footer { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .footer-left, .footer-right { font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -2165,12 +2219,14 @@ function openModal(type) {
   const title = document.getElementById('modalTitle');
   const body = document.getElementById('modalBody');
   const copyBtn = document.getElementById('modalCopyBtn');
+  const pdfBtn = document.getElementById('modalPdfBtn');
 
   if (type === 'prompt') {
     title.textContent = 'Generated Prompt';
     body.className = 'modal-body modal-body--text';
     body.textContent = window._generatedPrompt;
     copyBtn.style.display = 'flex';
+    pdfBtn.style.display = 'none';
   } else {
     title.textContent = 'Innovation Brief';
     body.className = 'modal-body modal-body--brief';
@@ -2178,6 +2234,7 @@ function openModal(type) {
     const iframe = document.getElementById('briefIframe');
     iframe.srcdoc = window._generatedBrief;
     copyBtn.style.display = 'none';
+    pdfBtn.style.display = 'flex';
   }
 
   overlay.classList.add('active');
@@ -2209,6 +2266,46 @@ function copyFromModal() {
       checkIcon.style.display = 'none';
     }, 2000);
   });
+}
+
+function exportBriefPdf() {
+  const btn = document.getElementById('modalPdfBtn');
+  btn.style.opacity = '0.5';
+  btn.style.pointerEvents = 'none';
+
+  // Create an offscreen container, inject the brief HTML, render to PDF
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;left:-9999px;top:0;width:1050px;';
+  document.body.appendChild(container);
+
+  // Parse the brief HTML and extract the body content + styles
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(window._generatedBrief, 'text/html');
+  const styles = doc.querySelectorAll('style');
+  const bodyContent = doc.body.innerHTML;
+
+  // Build a self-contained element
+  styles.forEach(s => container.appendChild(s.cloneNode(true)));
+  const inner = document.createElement('div');
+  inner.innerHTML = bodyContent;
+  // Apply body styles from the brief
+  inner.style.cssText = 'max-width:1050px;padding:60px 48px 48px 48px;font-family:Inter,-apple-system,sans-serif;color:#1a1a2e;background:#fff;';
+  container.appendChild(inner);
+
+  // Wait for fonts to load, then render
+  setTimeout(() => {
+    html2pdf().set({
+      margin: 0,
+      filename: 'AI-Innovator-Brief.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, width: 1050 },
+      jsPDF: { unit: 'px', format: [1050, 1485], hotfixes: ['px_scaling'] }
+    }).from(container).save().then(() => {
+      document.body.removeChild(container);
+      btn.style.opacity = '';
+      btn.style.pointerEvents = '';
+    });
+  }, 300);
 }
 
 function resetAll() {
