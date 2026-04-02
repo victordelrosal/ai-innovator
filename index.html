@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Innovator</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8888a0;
+    --green: #00e676;
+    --green-dark: #00a152;
+    --green-glow: rgba(0, 230, 118, 0.3);
+    --accent: #7c4dff;
+  }
+
+  html, body {
+    width: 100%; min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px 20px 40px 20px;
+    position: relative;
+  }
+
+  /* Dynamic spotlight background */
+  @keyframes drift1 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    25%  { transform: translate(30%, 20%) scale(1.1); }
+    50%  { transform: translate(-10%, 40%) scale(0.95); }
+    75%  { transform: translate(-30%, -10%) scale(1.05); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift2 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    25%  { transform: translate(-25%, -30%) scale(1.15); }
+    50%  { transform: translate(20%, -10%) scale(0.9); }
+    75%  { transform: translate(10%, 30%) scale(1.1); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift3 {
+    0%   { transform: translate(0%, 0%) scale(1.05); }
+    30%  { transform: translate(20%, -25%) scale(0.95); }
+    60%  { transform: translate(-20%, 15%) scale(1.1); }
+    100% { transform: translate(0%, 0%) scale(1.05); }
+  }
+  @keyframes drift4 {
+    0%   { transform: translate(0%, 0%) scale(1); }
+    35%  { transform: translate(-15%, 25%) scale(1.08); }
+    65%  { transform: translate(25%, -20%) scale(0.92); }
+    100% { transform: translate(0%, 0%) scale(1); }
+  }
+  @keyframes drift5 {
+    0%   { transform: translate(0%, 0%) scale(0.95); }
+    20%  { transform: translate(15%, -15%) scale(1.1); }
+    45%  { transform: translate(-25%, 10%) scale(1); }
+    70%  { transform: translate(10%, 25%) scale(0.9); }
+    100% { transform: translate(0%, 0%) scale(0.95); }
+  }
+
+  .bg-spotlights {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-spotlights::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+  }
+
+  .spot {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+  }
+  /* Deep purple */
+  .spot-1 {
+    width: 50vw; height: 50vw;
+    top: -10%; left: -5%;
+    background: radial-gradient(circle, rgba(100, 40, 200, 0.12) 0%, transparent 70%);
+    animation: drift1 25s ease-in-out infinite;
+  }
+  /* Emerald green */
+  .spot-2 {
+    width: 45vw; height: 45vw;
+    bottom: -5%; right: -10%;
+    background: radial-gradient(circle, rgba(0, 200, 100, 0.08) 0%, transparent 70%);
+    animation: drift2 30s ease-in-out infinite;
+  }
+  /* Royal dark blue */
+  .spot-3 {
+    width: 55vw; height: 55vw;
+    top: 20%; left: 30%;
+    background: radial-gradient(circle, rgba(15, 20, 80, 0.2) 0%, transparent 65%);
+    animation: drift3 35s ease-in-out infinite;
+  }
+  /* Mexican pink - subtle accent */
+  .spot-4 {
+    width: 30vw; height: 30vw;
+    top: 60%; left: 10%;
+    background: radial-gradient(circle, rgba(220, 50, 120, 0.06) 0%, transparent 70%);
+    animation: drift4 22s ease-in-out infinite;
+  }
+  /* Pink highlight - top right */
+  .spot-5 {
+    width: 25vw; height: 25vw;
+    top: 5%; right: 15%;
+    background: radial-gradient(circle, rgba(230, 70, 140, 0.05) 0%, transparent 70%);
+    animation: drift5 28s ease-in-out infinite;
+  }
+  /* Purple-pink accent - mid */
+  .spot-6 {
+    width: 35vw; height: 35vw;
+    top: 40%; right: -5%;
+    background: radial-gradient(circle, rgba(140, 50, 180, 0.07) 0%, transparent 70%);
+    animation: drift1 32s ease-in-out infinite reverse;
+  }
+  /* Deep green whisper - bottom left */
+  .spot-7 {
+    width: 40vw; height: 40vw;
+    bottom: 10%; left: -10%;
+    background: radial-gradient(circle, rgba(0, 150, 80, 0.05) 0%, transparent 70%);
+    animation: drift5 27s ease-in-out infinite reverse;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    width: 92vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+
+  /* Header - fixed at top */
+  .header {
+    position: fixed;
+    top: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .header h1 {
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+  .header p {
+    font-size: 1.5rem;
+    color: var(--text-dim);
+    font-weight: 400;
+  }
+
+  /* Slot Machine Grid */
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .slot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .slot-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+
+  /* Slot Window - Mechanical Odometer Drum */
+  .slot-window {
+    width: 100%;
+    height: 240px;
+    background: linear-gradient(
+      180deg,
+      #050508 0%,
+      #08080e 3%,
+      #0c0c14 6%,
+      #12121c 10%,
+      #181824 16%,
+      #1e1e2c 24%,
+      #222234 35%,
+      #252538 45%,
+      #262639 50%,
+      #252538 55%,
+      #222234 65%,
+      #1e1e2c 76%,
+      #181824 84%,
+      #12121c 90%,
+      #0c0c14 94%,
+      #08080e 97%,
+      #050508 100%
+    );
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    box-shadow:
+      inset 0 20px 40px rgba(0, 0, 0, 0.9),
+      inset 0 -20px 40px rgba(0, 0, 0, 0.9),
+      inset 6px 0 16px rgba(0, 0, 0, 0.5),
+      inset -6px 0 16px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.6),
+      0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  .slot-window:hover {
+    box-shadow:
+      inset 0 20px 40px rgba(0, 0, 0, 0.9),
+      inset 0 -20px 40px rgba(0, 0, 0, 0.9),
+      inset 6px 0 16px rgba(0, 0, 0, 0.5),
+      inset -6px 0 16px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(124, 77, 255, 0.12);
+  }
+  .slot-window.spinning {
+    box-shadow:
+      inset 0 20px 40px rgba(0, 0, 0, 0.9),
+      inset 0 -20px 40px rgba(0, 0, 0, 0.9),
+      inset 6px 0 16px rgba(0, 0, 0, 0.5),
+      inset -6px 0 16px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  .slot-window.locked {
+    box-shadow:
+      inset 0 20px 40px rgba(0, 0, 0, 0.9),
+      inset 0 -20px 40px rgba(0, 0, 0, 0.9),
+      inset 6px 0 16px rgba(0, 0, 0, 0.5),
+      inset -6px 0 16px rgba(0, 0, 0, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Deep cylindrical curvature - items roll into darkness at top/bottom */
+  .slot-window::before, .slot-window::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .slot-window::before {
+    top: 0;
+    height: 90px;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 5, 8, 1) 0%,
+      rgba(5, 5, 8, 0.97) 15%,
+      rgba(8, 8, 14, 0.88) 30%,
+      rgba(12, 12, 20, 0.7) 45%,
+      rgba(16, 16, 26, 0.4) 60%,
+      rgba(20, 20, 32, 0.15) 80%,
+      transparent 100%
+    );
+    border-radius: 8px 8px 0 0;
+  }
+  .slot-window::after {
+    bottom: 0;
+    height: 90px;
+    background: linear-gradient(
+      to top,
+      rgba(5, 5, 8, 1) 0%,
+      rgba(5, 5, 8, 0.97) 15%,
+      rgba(8, 8, 14, 0.88) 30%,
+      rgba(12, 12, 20, 0.7) 45%,
+      rgba(16, 16, 26, 0.4) 60%,
+      rgba(20, 20, 32, 0.15) 80%,
+      transparent 100%
+    );
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* Specular highlight - horizontal band simulating light on a cylinder */
+  .slot-window-inner {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 38%,
+        rgba(255, 255, 255, 0.03) 44%,
+        rgba(255, 255, 255, 0.05) 48%,
+        rgba(255, 255, 255, 0.06) 50%,
+        rgba(255, 255, 255, 0.05) 52%,
+        rgba(255, 255, 255, 0.03) 56%,
+        transparent 62%,
+        transparent 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        transparent 8%,
+        transparent 92%,
+        rgba(0, 0, 0, 0.3) 100%
+      );
+  }
+
+  /* Center line - now a single continuous bar behind slots-grid */
+  .slots-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .center-bar {
+    position: absolute;
+    top: 50%;
+    left: -16px;
+    right: -16px;
+    height: 86px;
+    transform: translateY(-50%);
+    border: 1.5px solid rgba(124, 77, 255, 0.1);
+    border-radius: 6px;
+    z-index: 10;
+    pointer-events: none;
+    background: rgba(124, 77, 255, 0.015);
+    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
+  }
+  .center-bar.all-locked {
+    border-color: rgba(124, 77, 255, 0.15);
+    background: rgba(124, 77, 255, 0.02);
+  }
+
+  /* Hide per-slot center lines */
+  .slot-window .center-line { display: none; }
+
+  .slot-reel {
+    position: absolute;
+    left: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: none;
+    visibility: hidden;
+  }
+  .slot-reel.visible {
+    visibility: visible;
+  }
+
+  .slot-item {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 3.5rem;
+    user-select: none;
+    transition: opacity 0.3s, filter 0.3s;
+    opacity: 0.08;
+    filter: grayscale(0.9) brightness(0.35);
+    position: relative;
+    border-bottom: 1px solid rgba(60, 60, 80, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  .slot-item.in-view {
+    opacity: 1;
+    filter: none;
+  }
+
+  /* Search filter input */
+  .manual-select {
+    width: 100%;
+    position: relative;
+  }
+  .filter-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 1.1rem;
+    font-family: inherit;
+    text-align: center;
+    transition: all 0.2s;
+    outline: none;
+  }
+  .filter-input::placeholder {
+    color: var(--text-dim);
+  }
+  .filter-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(124, 77, 255, 0.15);
+  }
+  .filter-input.has-selection {
+    color: var(--green);
+    border-color: rgba(0, 230, 118, 0.3);
+  }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    min-width: 180px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    z-index: 100;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+  }
+  .dropdown.open { display: block; }
+  .dropdown-item {
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dropdown-item:hover {
+    background: var(--surface2);
+  }
+  .dropdown-item .emoji { font-size: 1.3rem; }
+
+  /* Machine row layout */
+  .machine-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+  }
+  .machine-row .slots-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ============ HYPER-REALISTIC CASINO LEVER ============ */
+  .lever-wrapper {
+    width: 62px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .lever-wrapper.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* Steel mounting bracket on the "machine" side */
+  .lever-mount {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    width: 20px;
+    height: 80px;
+    background:
+      linear-gradient(135deg, #5a5a6a 0%, #3a3a4a 30%, #4a4a5a 50%, #2a2a3a 100%);
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #555;
+    border-right: none;
+    box-shadow:
+      inset 1px 1px 2px rgba(255,255,255,0.1),
+      inset -1px -1px 2px rgba(0,0,0,0.3),
+      -2px 0 8px rgba(0,0,0,0.4);
+  }
+  .mount-bolt {
+    position: absolute;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, #888, #555 60%, #333);
+    border: 1px solid #444;
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.2),
+      0 1px 2px rgba(0,0,0,0.4);
+  }
+  .mount-bolt::after {
+    content: '+';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #333;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .top-bolt { top: 12px; }
+  .bottom-bolt { bottom: 12px; }
+
+  /* Pivot housing: the cylinder the arm rotates around */
+  .lever-pivot-housing {
+    position: absolute;
+    left: 16px;
+    top: 88px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 45% 40%, #6a6a7a, #3a3a4a 60%, #2a2a3a);
+    border: 2px solid #555;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.5),
+      inset 0 1px 2px rgba(255,255,255,0.15),
+      inset 0 -1px 2px rgba(0,0,0,0.3);
+    z-index: 2;
+  }
+  .pivot-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%, #999, #555 70%);
+    border: 1px solid #666;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.3);
+  }
+
+  /* The moving arm assembly */
+  .lever-arm-assembly {
+    position: absolute;
+    left: 26px;
+    top: 10px;
+    width: 14px;
+    height: 96px;
+    transform-origin: 50% 93px;
+    transition: none;
+    z-index: 1;
+  }
+  .lever-arm-assembly.pulled {
+    animation: leverPull3D 1s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes leverPull3D {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(45deg); }
+    40%  { transform: rotate(45deg); }
+    65%  { transform: rotate(-6deg); }
+    80%  { transform: rotate(3deg); }
+    90%  { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  /* Chrome shaft */
+  .lever-shaft {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 80px;
+    background:
+      linear-gradient(90deg,
+        #666 0%,
+        #aaa 15%,
+        #ddd 30%,
+        #fff 42%,
+        #ddd 50%,
+        #bbb 65%,
+        #888 80%,
+        #666 100%);
+    border-radius: 5px;
+    box-shadow:
+      2px 2px 6px rgba(0,0,0,0.4),
+      -1px -1px 3px rgba(0,0,0,0.2);
+  }
+
+  /* Rubber grip section */
+  .lever-grip {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .grip-ring {
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background:
+      linear-gradient(90deg,
+        #222 0%, #444 20%, #555 40%, #444 60%, #333 80%, #222 100%);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.08),
+      inset 0 -1px 1px rgba(0,0,0,0.3);
+  }
+
+  /* The big red ball */
+  .lever-ball {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 32%,
+        #ff6b6b 0%,
+        #ff3333 20%,
+        #dd1111 45%,
+        #bb0000 65%,
+        #880000 85%,
+        #550000 100%);
+    border: 1.5px solid rgba(100, 0, 0, 0.6);
+    box-shadow:
+      0 0 15px rgba(255, 40, 40, 0.4),
+      0 4px 10px rgba(0, 0, 0, 0.5),
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      inset 0 -4px 8px rgba(60, 0, 0, 0.5),
+      inset 0 2px 4px rgba(255, 130, 130, 0.3);
+    transition: box-shadow 0.3s;
+  }
+  .lever-wrapper:hover .lever-ball {
+    box-shadow:
+      0 0 25px rgba(255, 40, 40, 0.6),
+      0 0 50px rgba(255, 40, 40, 0.2),
+      0 4px 10px rgba(0, 0, 0, 0.5),
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      inset 0 -4px 8px rgba(60, 0, 0, 0.5),
+      inset 0 2px 4px rgba(255, 130, 130, 0.3);
+  }
+
+  /* Specular highlight on the ball */
+  .ball-highlight {
+    position: absolute;
+    top: 5px;
+    left: 18%;
+    width: 45%;
+    height: 35%;
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.3) 40%,
+      transparent 70%);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+  }
+  /* Secondary reflection */
+  .lever-ball::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    width: 20%;
+    height: 15%;
+    background: radial-gradient(ellipse,
+      rgba(255, 200, 200, 0.25) 0%,
+      transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Label */
+  .lever-label-text {
+    position: absolute;
+    bottom: -4px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    color: #555;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* GO Button - rises from below like a stage elevator */
+  .go-section {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(200px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+  }
+  .go-section.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes candyPulse {
+    0%, 100% { box-shadow:
+      0 0 30px rgba(0, 230, 118, 0.4),
+      0 0 60px rgba(0, 230, 118, 0.15),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    }
+    50% { box-shadow:
+      0 0 50px rgba(0, 230, 118, 0.55),
+      0 0 90px rgba(0, 230, 118, 0.25),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    }
+  }
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+
+  .go-btn {
+    width: 340px;
+    height: 96px;
+    border-radius: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 3px solid rgba(0, 50, 20, 0.5);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.2) 0%, transparent 50%),
+      linear-gradient(180deg, #4cff91 0%, #00e676 15%, #00c853 40%, #00a152 70%, #007a3d 100%);
+    box-shadow:
+      0 0 30px rgba(0, 230, 118, 0.4),
+      0 0 60px rgba(0, 230, 118, 0.15),
+      0 8px 0 #006b2b,
+      0 10px 20px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.35),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    transition: all 0.15s ease;
+    position: relative;
+    text-transform: uppercase;
+    text-shadow:
+      0 2px 4px rgba(0, 60, 20, 0.6),
+      0 0 20px rgba(0, 230, 118, 0.4);
+    overflow: hidden;
+    animation: candyPulse 2.5s ease-in-out infinite;
+  }
+  /* Glossy top highlight */
+  .go-btn::before {
+    content: '';
+    position: absolute;
+    top: 3px; left: 12%; right: 12%;
+    height: 38%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
+    border-radius: 40px 40px 50% 50%;
+    pointer-events: none;
+  }
+  /* Shimmer sweep */
+  .go-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.2) 48%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.2) 52%, transparent 70%);
+    pointer-events: none;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  .go-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+      0 0 60px rgba(0, 230, 118, 0.6),
+      0 0 120px rgba(0, 230, 118, 0.25),
+      0 12px 0 #006b2b,
+      0 14px 30px rgba(0, 0, 0, 0.5),
+      inset 0 2px 3px rgba(255, 255, 255, 0.4),
+      inset 0 -4px 8px rgba(0, 60, 20, 0.4);
+    animation: none;
+  }
+  .go-btn:active {
+    transform: translateY(6px) scale(0.96);
+    box-shadow:
+      0 0 15px rgba(0, 230, 118, 0.25),
+      0 0 30px rgba(0, 230, 118, 0.08),
+      0 1px 0 #006b2b,
+      0 2px 4px rgba(0, 0, 0, 0.4),
+      inset 0 4px 8px rgba(0, 40, 15, 0.6),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.15);
+    animation: none;
+    transition: all 0.08s ease-in;
+  }
+  .go-btn.pressed {
+    animation: goSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes goSpring {
+    0%   { transform: translateY(0) scale(1); }
+    12%  { transform: translateY(7px) scale(0.95, 0.92); }
+    28%  { transform: translateY(7px) scale(0.95, 0.92); }
+    48%  { transform: translateY(-6px) scale(1.04, 1.06); }
+    65%  { transform: translateY(2px) scale(0.99, 0.98); }
+    80%  { transform: translateY(-2px) scale(1.01, 1.02); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  .selections-preview {
+    display: flex;
+    gap: 16px;
+    font-size: 2.6rem;
+    padding: 12px 0;
+  }
+
+  /* Prompt Output */
+  .prompt-section {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeUp 0.5s ease-out;
+  }
+  .prompt-section.visible { display: flex; }
+
+  .prompt-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .prompt-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  .copy-btn {
+    width: 40px; height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .copy-btn:hover {
+    border-color: var(--green);
+    background: rgba(0, 230, 118, 0.08);
+  }
+  .copy-btn svg { width: 18px; height: 18px; stroke: var(--text-dim); fill: none; stroke-width: 2; transition: stroke 0.25s; }
+  .copy-btn:hover svg { stroke: var(--green); }
+  .copy-btn.copied {
+    border-color: var(--green);
+    background: rgba(0, 230, 118, 0.12);
+  }
+  .copy-btn.copied svg { stroke: var(--green); }
+
+  .copy-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .copy-btn:hover .copy-tooltip { opacity: 1; }
+  .copy-btn.copied .copy-tooltip { color: var(--green); }
+
+  .prompt-box {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    font-family: 'Inter', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 500px;
+    overflow-y: auto;
+    user-select: all;
+  }
+
+  /* Back / Reset */
+  .reset-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 36px;
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 0.04em;
+  }
+  .reset-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(124, 77, 255, 0.08);
+    box-shadow: 0 0 16px rgba(124, 77, 255, 0.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .slots-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+    .slot-window { height: 180px; }
+    .slot-item { font-size: 2.5rem; height: 60px; }
+    .slot-item { height: 60px; border-bottom: 1px solid rgba(60, 60, 80, 0.12); border-top: 1px solid rgba(0, 0, 0, 0.25); }
+    .go-btn { width: 240px; height: 72px; font-size: 1.8rem; border-radius: 36px; }
+    .selections-preview { font-size: 2rem; }
+  }
+
+  /* Scrollbar */
+  .dropdown::-webkit-scrollbar, .prompt-box::-webkit-scrollbar { width: 6px; }
+  .dropdown::-webkit-scrollbar-track, .prompt-box::-webkit-scrollbar-track { background: transparent; }
+  .dropdown::-webkit-scrollbar-thumb, .prompt-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Dynamic spotlight background -->
+<div class="bg-spotlights">
+  <div class="spot spot-1"></div>
+  <div class="spot spot-2"></div>
+  <div class="spot spot-3"></div>
+  <div class="spot spot-4"></div>
+  <div class="spot spot-5"></div>
+  <div class="spot spot-6"></div>
+  <div class="spot spot-7"></div>
+</div>
+
+<div class="container" id="mainView">
+  <div class="header">
+    <h1>The AI Innovator</h1>
+    <p>Select your ingredients or spin the reels. Then hit Go.</p>
+  </div>
+
+  <div class="machine-row">
+    <div class="slots-wrapper" id="slotsWrapper">
+      <div class="center-bar" id="centerBar"></div>
+      <div class="slots-grid" id="slotsGrid"></div>
+    </div>
+
+    <div class="lever-wrapper" id="leverWrapper" onclick="pullLever()">
+      <!-- Mounting bracket -->
+      <div class="lever-mount">
+        <div class="mount-bolt top-bolt"></div>
+        <div class="mount-bolt bottom-bolt"></div>
+      </div>
+      <!-- Pivot housing -->
+      <div class="lever-pivot-housing">
+        <div class="pivot-ring"></div>
+      </div>
+      <!-- The arm -->
+      <div class="lever-arm-assembly" id="leverArm">
+        <div class="lever-shaft"></div>
+        <div class="lever-grip">
+          <div class="grip-ring r1"></div>
+          <div class="grip-ring r2"></div>
+          <div class="grip-ring r3"></div>
+          <div class="grip-ring r4"></div>
+          <div class="grip-ring r5"></div>
+        </div>
+        <div class="lever-ball">
+          <div class="ball-highlight"></div>
+        </div>
+      </div>
+      <div class="lever-label-text">PULL</div>
+    </div>
+  </div>
+
+  <div class="go-section" id="goSection">
+    <div class="selections-preview" id="selectionsPreview"></div>
+    <button class="go-btn" id="goBtn" onclick="generatePrompt()">Go</button>
+  </div>
+</div>
+
+<div class="container" id="promptView" style="display:none;">
+  <div class="header">
+    <h1>Your Prompt</h1>
+    <p>Copy and paste this into Claude Code.</p>
+  </div>
+
+  <div class="prompt-section visible">
+    <div class="prompt-header">
+      <span class="prompt-title">Generated prompt</span>
+      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
+        <span class="copy-tooltip" id="copyTooltip">Copy to clipboard</span>
+        <svg id="copyIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+        </svg>
+        <svg id="checkIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    </div>
+    <div class="prompt-box" id="promptBox"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">Start Over</button>
+</div>
+
+<script>
+const CATEGORIES = [
+  {
+    key: 'country', label: 'Country',
+    items: [
+      { emoji: '🇦🇫', name: 'Afghanistan' },
+      { emoji: '🇦🇱', name: 'Albania' },
+      { emoji: '🇩🇿', name: 'Algeria' },
+      { emoji: '🇦🇩', name: 'Andorra' },
+      { emoji: '🇦🇴', name: 'Angola' },
+      { emoji: '🇦🇬', name: 'Antigua & Barbuda' },
+      { emoji: '🇦🇷', name: 'Argentina' },
+      { emoji: '🇦🇲', name: 'Armenia' },
+      { emoji: '🇦🇺', name: 'Australia' },
+      { emoji: '🇦🇹', name: 'Austria' },
+      { emoji: '🇦🇿', name: 'Azerbaijan' },
+      { emoji: '🇧🇸', name: 'Bahamas' },
+      { emoji: '🇧🇭', name: 'Bahrain' },
+      { emoji: '🇧🇩', name: 'Bangladesh' },
+      { emoji: '🇧🇧', name: 'Barbados' },
+      { emoji: '🇧🇾', name: 'Belarus' },
+      { emoji: '🇧🇪', name: 'Belgium' },
+      { emoji: '🇧🇿', name: 'Belize' },
+      { emoji: '🇧🇯', name: 'Benin' },
+      { emoji: '🇧🇹', name: 'Bhutan' },
+      { emoji: '🇧🇴', name: 'Bolivia' },
+      { emoji: '🇧🇦', name: 'Bosnia & Herzegovina' },
+      { emoji: '🇧🇼', name: 'Botswana' },
+      { emoji: '🇧🇷', name: 'Brazil' },
+      { emoji: '🇧🇳', name: 'Brunei' },
+      { emoji: '🇧🇬', name: 'Bulgaria' },
+      { emoji: '🇧🇫', name: 'Burkina Faso' },
+      { emoji: '🇧🇮', name: 'Burundi' },
+      { emoji: '🇨🇻', name: 'Cabo Verde' },
+      { emoji: '🇰🇭', name: 'Cambodia' },
+      { emoji: '🇨🇲', name: 'Cameroon' },
+      { emoji: '🇨🇦', name: 'Canada' },
+      { emoji: '🇨🇫', name: 'Central African Republic' },
+      { emoji: '🇹🇩', name: 'Chad' },
+      { emoji: '🇨🇱', name: 'Chile' },
+      { emoji: '🇨🇳', name: 'China' },
+      { emoji: '🇨🇴', name: 'Colombia' },
+      { emoji: '🇰🇲', name: 'Comoros' },
+      { emoji: '🇨🇬', name: 'Congo' },
+      { emoji: '🇨🇩', name: 'Congo (DRC)' },
+      { emoji: '🇨🇷', name: 'Costa Rica' },
+      { emoji: '🇭🇷', name: 'Croatia' },
+      { emoji: '🇨🇺', name: 'Cuba' },
+      { emoji: '🇨🇾', name: 'Cyprus' },
+      { emoji: '🇨🇿', name: 'Czechia' },
+      { emoji: '🇩🇰', name: 'Denmark' },
+      { emoji: '🇩🇯', name: 'Djibouti' },
+      { emoji: '🇩🇲', name: 'Dominica' },
+      { emoji: '🇩🇴', name: 'Dominican Republic' },
+      { emoji: '🇪🇨', name: 'Ecuador' },
+      { emoji: '🇪🇬', name: 'Egypt' },
+      { emoji: '🇸🇻', name: 'El Salvador' },
+      { emoji: '🇬🇶', name: 'Equatorial Guinea' },
+      { emoji: '🇪🇷', name: 'Eritrea' },
+      { emoji: '🇪🇪', name: 'Estonia' },
+      { emoji: '🇸🇿', name: 'Eswatini' },
+      { emoji: '🇪🇹', name: 'Ethiopia' },
+      { emoji: '🇫🇯', name: 'Fiji' },
+      { emoji: '🇫🇮', name: 'Finland' },
+      { emoji: '🇫🇷', name: 'France' },
+      { emoji: '🇬🇦', name: 'Gabon' },
+      { emoji: '🇬🇲', name: 'Gambia' },
+      { emoji: '🇬🇪', name: 'Georgia' },
+      { emoji: '🇩🇪', name: 'Germany' },
+      { emoji: '🇬🇭', name: 'Ghana' },
+      { emoji: '🇬🇷', name: 'Greece' },
+      { emoji: '🇬🇩', name: 'Grenada' },
+      { emoji: '🇬🇹', name: 'Guatemala' },
+      { emoji: '🇬🇳', name: 'Guinea' },
+      { emoji: '🇬🇼', name: 'Guinea-Bissau' },
+      { emoji: '🇬🇾', name: 'Guyana' },
+      { emoji: '🇭🇹', name: 'Haiti' },
+      { emoji: '🇭🇳', name: 'Honduras' },
+      { emoji: '🇭🇺', name: 'Hungary' },
+      { emoji: '🇮🇸', name: 'Iceland' },
+      { emoji: '🇮🇳', name: 'India' },
+      { emoji: '🇮🇩', name: 'Indonesia' },
+      { emoji: '🇮🇷', name: 'Iran' },
+      { emoji: '🇮🇶', name: 'Iraq' },
+      { emoji: '🇮🇪', name: 'Ireland' },
+      { emoji: '🇮🇱', name: 'Israel' },
+      { emoji: '🇮🇹', name: 'Italy' },
+      { emoji: '🇨🇮', name: 'Ivory Coast' },
+      { emoji: '🇯🇲', name: 'Jamaica' },
+      { emoji: '🇯🇵', name: 'Japan' },
+      { emoji: '🇯🇴', name: 'Jordan' },
+      { emoji: '🇰🇿', name: 'Kazakhstan' },
+      { emoji: '🇰🇪', name: 'Kenya' },
+      { emoji: '🇰🇮', name: 'Kiribati' },
+      { emoji: '🇰🇼', name: 'Kuwait' },
+      { emoji: '🇰🇬', name: 'Kyrgyzstan' },
+      { emoji: '🇱🇦', name: 'Laos' },
+      { emoji: '🇱🇻', name: 'Latvia' },
+      { emoji: '🇱🇧', name: 'Lebanon' },
+      { emoji: '🇱🇸', name: 'Lesotho' },
+      { emoji: '🇱🇷', name: 'Liberia' },
+      { emoji: '🇱🇾', name: 'Libya' },
+      { emoji: '🇱🇮', name: 'Liechtenstein' },
+      { emoji: '🇱🇹', name: 'Lithuania' },
+      { emoji: '🇱🇺', name: 'Luxembourg' },
+      { emoji: '🇲🇬', name: 'Madagascar' },
+      { emoji: '🇲🇼', name: 'Malawi' },
+      { emoji: '🇲🇾', name: 'Malaysia' },
+      { emoji: '🇲🇻', name: 'Maldives' },
+      { emoji: '🇲🇱', name: 'Mali' },
+      { emoji: '🇲🇹', name: 'Malta' },
+      { emoji: '🇲🇭', name: 'Marshall Islands' },
+      { emoji: '🇲🇷', name: 'Mauritania' },
+      { emoji: '🇲🇺', name: 'Mauritius' },
+      { emoji: '🇲🇽', name: 'Mexico' },
+      { emoji: '🇫🇲', name: 'Micronesia' },
+      { emoji: '🇲🇩', name: 'Moldova' },
+      { emoji: '🇲🇨', name: 'Monaco' },
+      { emoji: '🇲🇳', name: 'Mongolia' },
+      { emoji: '🇲🇪', name: 'Montenegro' },
+      { emoji: '🇲🇦', name: 'Morocco' },
+      { emoji: '🇲🇿', name: 'Mozambique' },
+      { emoji: '🇲🇲', name: 'Myanmar' },
+      { emoji: '🇳🇦', name: 'Namibia' },
+      { emoji: '🇳🇷', name: 'Nauru' },
+      { emoji: '🇳🇵', name: 'Nepal' },
+      { emoji: '🇳🇱', name: 'Netherlands' },
+      { emoji: '🇳🇿', name: 'New Zealand' },
+      { emoji: '🇳🇮', name: 'Nicaragua' },
+      { emoji: '🇳🇪', name: 'Niger' },
+      { emoji: '🇳🇬', name: 'Nigeria' },
+      { emoji: '🇰🇵', name: 'North Korea' },
+      { emoji: '🇲🇰', name: 'North Macedonia' },
+      { emoji: '🇳🇴', name: 'Norway' },
+      { emoji: '🇴🇲', name: 'Oman' },
+      { emoji: '🇵🇰', name: 'Pakistan' },
+      { emoji: '🇵🇼', name: 'Palau' },
+      { emoji: '🇵🇸', name: 'Palestine' },
+      { emoji: '🇵🇦', name: 'Panama' },
+      { emoji: '🇵🇬', name: 'Papua New Guinea' },
+      { emoji: '🇵🇾', name: 'Paraguay' },
+      { emoji: '🇵🇪', name: 'Peru' },
+      { emoji: '🇵🇭', name: 'Philippines' },
+      { emoji: '🇵🇱', name: 'Poland' },
+      { emoji: '🇵🇹', name: 'Portugal' },
+      { emoji: '🇶🇦', name: 'Qatar' },
+      { emoji: '🇷🇴', name: 'Romania' },
+      { emoji: '🇷🇺', name: 'Russia' },
+      { emoji: '🇷🇼', name: 'Rwanda' },
+      { emoji: '🇰🇳', name: 'Saint Kitts & Nevis' },
+      { emoji: '🇱🇨', name: 'Saint Lucia' },
+      { emoji: '🇻🇨', name: 'Saint Vincent' },
+      { emoji: '🇼🇸', name: 'Samoa' },
+      { emoji: '🇸🇲', name: 'San Marino' },
+      { emoji: '🇸🇹', name: 'Sao Tome & Principe' },
+      { emoji: '🇸🇦', name: 'Saudi Arabia' },
+      { emoji: '🇸🇳', name: 'Senegal' },
+      { emoji: '🇷🇸', name: 'Serbia' },
+      { emoji: '🇸🇨', name: 'Seychelles' },
+      { emoji: '🇸🇱', name: 'Sierra Leone' },
+      { emoji: '🇸🇬', name: 'Singapore' },
+      { emoji: '🇸🇰', name: 'Slovakia' },
+      { emoji: '🇸🇮', name: 'Slovenia' },
+      { emoji: '🇸🇧', name: 'Solomon Islands' },
+      { emoji: '🇸🇴', name: 'Somalia' },
+      { emoji: '🇿🇦', name: 'South Africa' },
+      { emoji: '🇰🇷', name: 'South Korea' },
+      { emoji: '🇸🇸', name: 'South Sudan' },
+      { emoji: '🇪🇸', name: 'Spain' },
+      { emoji: '🇱🇰', name: 'Sri Lanka' },
+      { emoji: '🇸🇩', name: 'Sudan' },
+      { emoji: '🇸🇷', name: 'Suriname' },
+      { emoji: '🇸🇪', name: 'Sweden' },
+      { emoji: '🇨🇭', name: 'Switzerland' },
+      { emoji: '🇸🇾', name: 'Syria' },
+      { emoji: '🇹🇼', name: 'Taiwan' },
+      { emoji: '🇹🇯', name: 'Tajikistan' },
+      { emoji: '🇹🇿', name: 'Tanzania' },
+      { emoji: '🇹🇭', name: 'Thailand' },
+      { emoji: '🇹🇱', name: 'Timor-Leste' },
+      { emoji: '🇹🇬', name: 'Togo' },
+      { emoji: '🇹🇴', name: 'Tonga' },
+      { emoji: '🇹🇹', name: 'Trinidad & Tobago' },
+      { emoji: '🇹🇳', name: 'Tunisia' },
+      { emoji: '🇹🇷', name: 'Turkey' },
+      { emoji: '🇹🇲', name: 'Turkmenistan' },
+      { emoji: '🇹🇻', name: 'Tuvalu' },
+      { emoji: '🇺🇬', name: 'Uganda' },
+      { emoji: '🇺🇦', name: 'Ukraine' },
+      { emoji: '🇦🇪', name: 'UAE' },
+      { emoji: '🇬🇧', name: 'United Kingdom' },
+      { emoji: '🇺🇸', name: 'United States' },
+      { emoji: '🇺🇾', name: 'Uruguay' },
+      { emoji: '🇺🇿', name: 'Uzbekistan' },
+      { emoji: '🇻🇺', name: 'Vanuatu' },
+      { emoji: '🇻🇦', name: 'Vatican City' },
+      { emoji: '🇻🇪', name: 'Venezuela' },
+      { emoji: '🇻🇳', name: 'Vietnam' },
+      { emoji: '🇾🇪', name: 'Yemen' },
+      { emoji: '🇿🇲', name: 'Zambia' },
+      { emoji: '🇿🇼', name: 'Zimbabwe' },
+    ]
+  },
+  {
+    key: 'fruit', label: 'Fruit',
+    items: [
+      { emoji: '🍎', name: 'Red Apple' },
+      { emoji: '🍏', name: 'Green Apple' },
+      { emoji: '🍐', name: 'Pear' },
+      { emoji: '🍊', name: 'Orange' },
+      { emoji: '🍋', name: 'Lemon' },
+      { emoji: '🍋‍🟩', name: 'Lime' },
+      { emoji: '🍌', name: 'Banana' },
+      { emoji: '🍉', name: 'Watermelon' },
+      { emoji: '🍇', name: 'Grapes' },
+      { emoji: '🍓', name: 'Strawberry' },
+      { emoji: '🫐', name: 'Blueberry' },
+      { emoji: '🍈', name: 'Melon' },
+      { emoji: '🍒', name: 'Cherry' },
+      { emoji: '🍑', name: 'Peach' },
+      { emoji: '🥭', name: 'Mango' },
+      { emoji: '🍍', name: 'Pineapple' },
+      { emoji: '🥥', name: 'Coconut' },
+      { emoji: '🥝', name: 'Kiwi' },
+      { emoji: '🍅', name: 'Tomato' },
+      { emoji: '🫒', name: 'Olive' },
+      { emoji: '🌰', name: 'Chestnut' },
+      { emoji: '🥑', name: 'Avocado' },
+      { emoji: '🫑', name: 'Bell Pepper' },
+      { emoji: '🌶️', name: 'Hot Pepper' },
+      { emoji: '🫚', name: 'Ginger' },
+      { emoji: '🥕', name: 'Carrot' },
+      { emoji: '🌽', name: 'Corn' },
+      { emoji: '🥒', name: 'Cucumber' },
+      { emoji: '🍆', name: 'Aubergine' },
+      { emoji: '🥜', name: 'Peanut' },
+    ]
+  },
+  {
+    key: 'animal', label: 'Animal',
+    items: [
+      { emoji: '🐶', name: 'Dog' },
+      { emoji: '🐱', name: 'Cat' },
+      { emoji: '🐭', name: 'Mouse' },
+      { emoji: '🐹', name: 'Hamster' },
+      { emoji: '🐰', name: 'Rabbit' },
+      { emoji: '🦊', name: 'Fox' },
+      { emoji: '🐻', name: 'Bear' },
+      { emoji: '🐼', name: 'Panda' },
+      { emoji: '🐻‍❄️', name: 'Polar Bear' },
+      { emoji: '🐨', name: 'Koala' },
+      { emoji: '🐯', name: 'Tiger' },
+      { emoji: '🦁', name: 'Lion' },
+      { emoji: '🐮', name: 'Cow' },
+      { emoji: '🐷', name: 'Pig' },
+      { emoji: '🐸', name: 'Frog' },
+      { emoji: '🐵', name: 'Monkey' },
+      { emoji: '🙈', name: 'See-No-Evil Monkey' },
+      { emoji: '🐔', name: 'Chicken' },
+      { emoji: '🐧', name: 'Penguin' },
+      { emoji: '🐦', name: 'Bird' },
+      { emoji: '🐤', name: 'Chick' },
+      { emoji: '🦆', name: 'Duck' },
+      { emoji: '🦅', name: 'Eagle' },
+      { emoji: '🦉', name: 'Owl' },
+      { emoji: '🦇', name: 'Bat' },
+      { emoji: '🐺', name: 'Wolf' },
+      { emoji: '🐗', name: 'Boar' },
+      { emoji: '🐴', name: 'Horse' },
+      { emoji: '🦄', name: 'Unicorn' },
+      { emoji: '🐝', name: 'Bee' },
+      { emoji: '🪱', name: 'Worm' },
+      { emoji: '🐛', name: 'Bug' },
+      { emoji: '🦋', name: 'Butterfly' },
+      { emoji: '🐌', name: 'Snail' },
+      { emoji: '🐞', name: 'Ladybug' },
+      { emoji: '🐜', name: 'Ant' },
+      { emoji: '🪲', name: 'Beetle' },
+      { emoji: '🦗', name: 'Cricket' },
+      { emoji: '🪳', name: 'Cockroach' },
+      { emoji: '🕷️', name: 'Spider' },
+      { emoji: '🦂', name: 'Scorpion' },
+      { emoji: '🐢', name: 'Turtle' },
+      { emoji: '🐍', name: 'Snake' },
+      { emoji: '🦎', name: 'Lizard' },
+      { emoji: '🐊', name: 'Crocodile' },
+      { emoji: '🦕', name: 'Sauropod' },
+      { emoji: '🦖', name: 'T-Rex' },
+      { emoji: '🐳', name: 'Whale' },
+      { emoji: '🐬', name: 'Dolphin' },
+      { emoji: '🦭', name: 'Seal' },
+      { emoji: '🐟', name: 'Fish' },
+      { emoji: '🐠', name: 'Tropical Fish' },
+      { emoji: '🐡', name: 'Blowfish' },
+      { emoji: '🦈', name: 'Shark' },
+      { emoji: '🐙', name: 'Octopus' },
+      { emoji: '🦞', name: 'Lobster' },
+      { emoji: '🦀', name: 'Crab' },
+      { emoji: '🦑', name: 'Squid' },
+      { emoji: '🪼', name: 'Jellyfish' },
+      { emoji: '🐘', name: 'Elephant' },
+      { emoji: '🦣', name: 'Mammoth' },
+      { emoji: '🦏', name: 'Rhinoceros' },
+      { emoji: '🦛', name: 'Hippopotamus' },
+      { emoji: '🦒', name: 'Giraffe' },
+      { emoji: '🦘', name: 'Kangaroo' },
+      { emoji: '🦬', name: 'Bison' },
+      { emoji: '🐃', name: 'Water Buffalo' },
+      { emoji: '🦌', name: 'Deer' },
+      { emoji: '🐪', name: 'Camel' },
+      { emoji: '🐫', name: 'Two-Hump Camel' },
+      { emoji: '🦙', name: 'Llama' },
+      { emoji: '🐑', name: 'Sheep' },
+      { emoji: '🐐', name: 'Goat' },
+      { emoji: '🦩', name: 'Flamingo' },
+      { emoji: '🦚', name: 'Peacock' },
+      { emoji: '🦜', name: 'Parrot' },
+      { emoji: '🦢', name: 'Swan' },
+      { emoji: '🦤', name: 'Dodo' },
+      { emoji: '🪿', name: 'Goose' },
+      { emoji: '🦔', name: 'Hedgehog' },
+      { emoji: '🦦', name: 'Otter' },
+      { emoji: '🦥', name: 'Sloth' },
+      { emoji: '🦫', name: 'Beaver' },
+      { emoji: '🐿️', name: 'Chipmunk' },
+      { emoji: '🦝', name: 'Raccoon' },
+      { emoji: '🦨', name: 'Skunk' },
+      { emoji: '🦃', name: 'Turkey' },
+      { emoji: '🐓', name: 'Rooster' },
+      { emoji: '🕊️', name: 'Dove' },
+      { emoji: '🦧', name: 'Orangutan' },
+      { emoji: '🦍', name: 'Gorilla' },
+      { emoji: '🐎', name: 'Racehorse' },
+      { emoji: '🫏', name: 'Donkey' },
+      { emoji: '🦮', name: 'Guide Dog' },
+      { emoji: '🐕‍🦺', name: 'Service Dog' },
+      { emoji: '🐈‍⬛', name: 'Black Cat' },
+      { emoji: '🪶', name: 'Feather' },
+      { emoji: '🐚', name: 'Shell' },
+      { emoji: '🪸', name: 'Coral' },
+    ]
+  },
+  {
+    key: 'action', label: 'Action',
+    items: [
+      { emoji: '🕺🏻', name: 'Dancing' },
+      { emoji: '💃', name: 'Flamenco' },
+      { emoji: '🏄', name: 'Surfing' },
+      { emoji: '🧗', name: 'Climbing' },
+      { emoji: '🎤', name: 'Singing' },
+      { emoji: '🎨', name: 'Painting' },
+      { emoji: '🏃', name: 'Running' },
+      { emoji: '🧘', name: 'Meditating' },
+      { emoji: '🎸', name: 'Playing Guitar' },
+      { emoji: '📸', name: 'Photography' },
+      { emoji: '✍️', name: 'Writing' },
+      { emoji: '🤿', name: 'Diving' },
+      { emoji: '🛶', name: 'Canoeing' },
+      { emoji: '🎭', name: 'Acting' },
+      { emoji: '🪂', name: 'Skydiving' },
+      { emoji: '🏋️', name: 'Weightlifting' },
+      { emoji: '⛷️', name: 'Skiing' },
+      { emoji: '🏂', name: 'Snowboarding' },
+      { emoji: '🏌️', name: 'Golfing' },
+      { emoji: '🤸', name: 'Gymnastics' },
+      { emoji: '🤼', name: 'Wrestling' },
+      { emoji: '🤾', name: 'Handball' },
+      { emoji: '⛹️', name: 'Basketball' },
+      { emoji: '🚴', name: 'Cycling' },
+      { emoji: '🚣', name: 'Rowing' },
+      { emoji: '🏊', name: 'Swimming' },
+      { emoji: '🤽', name: 'Water Polo' },
+      { emoji: '🧑‍🍳', name: 'Cooking' },
+      { emoji: '🧑‍🔬', name: 'Researching' },
+      { emoji: '🧑‍🚀', name: 'Space Travel' },
+      { emoji: '🧑‍🎓', name: 'Studying' },
+      { emoji: '🧑‍🌾', name: 'Farming' },
+      { emoji: '🧑‍🏭', name: 'Manufacturing' },
+      { emoji: '🧑‍💻', name: 'Coding' },
+      { emoji: '🧑‍🎤', name: 'Performing' },
+      { emoji: '🧑‍🎨', name: 'Creating Art' },
+      { emoji: '🧑‍✈️', name: 'Flying' },
+      { emoji: '🧑‍🚒', name: 'Firefighting' },
+      { emoji: '🏇', name: 'Horse Racing' },
+      { emoji: '🎣', name: 'Fishing' },
+      { emoji: '🎯', name: 'Target Shooting' },
+      { emoji: '🎳', name: 'Bowling' },
+      { emoji: '🎲', name: 'Gaming' },
+      { emoji: '🧩', name: 'Puzzling' },
+      { emoji: '♟️', name: 'Chess' },
+      { emoji: '🎹', name: 'Playing Piano' },
+      { emoji: '🥁', name: 'Drumming' },
+      { emoji: '🎺', name: 'Playing Trumpet' },
+      { emoji: '🎻', name: 'Playing Violin' },
+      { emoji: '🪗', name: 'Playing Accordion' },
+      { emoji: '🏹', name: 'Archery' },
+      { emoji: '🥊', name: 'Boxing' },
+      { emoji: '🥋', name: 'Martial Arts' },
+      { emoji: '⛸️', name: 'Ice Skating' },
+      { emoji: '🛹', name: 'Skateboarding' },
+      { emoji: '🧵', name: 'Sewing' },
+      { emoji: '🪡', name: 'Knitting' },
+      { emoji: '🔭', name: 'Stargazing' },
+      { emoji: '🔬', name: 'Microscopy' },
+      { emoji: '📖', name: 'Reading' },
+      { emoji: '🪴', name: 'Gardening' },
+    ]
+  },
+  {
+    key: 'surprise', label: 'Surprise',
+    items: [
+      { emoji: '🌋', name: 'Volcano' },
+      { emoji: '🎪', name: 'Circus' },
+      { emoji: '🔮', name: 'Crystal Ball' },
+      { emoji: '🚀', name: 'Rocket' },
+      { emoji: '⚡', name: 'Lightning' },
+      { emoji: '🌈', name: 'Rainbow' },
+      { emoji: '🎭', name: 'Masks' },
+      { emoji: '🏚️', name: 'Haunted House' },
+      { emoji: '🗿', name: 'Moai' },
+      { emoji: '🧊', name: 'Ice' },
+      { emoji: '🌸', name: 'Cherry Blossom' },
+      { emoji: '🎠', name: 'Carousel' },
+      { emoji: '💎', name: 'Diamond' },
+      { emoji: '🕰️', name: 'Clock' },
+      { emoji: '🪄', name: 'Magic Wand' },
+      { emoji: '🛸', name: 'UFO' },
+      { emoji: '🧲', name: 'Magnet' },
+      { emoji: '🪞', name: 'Mirror' },
+      { emoji: '🏴‍☠️', name: 'Pirate Flag' },
+      { emoji: '🗺️', name: 'World Map' },
+      { emoji: '⏳', name: 'Hourglass' },
+      { emoji: '🧿', name: 'Evil Eye' },
+      { emoji: '🪬', name: 'Hamsa' },
+      { emoji: '🎰', name: 'Slot Machine' },
+      { emoji: '🎡', name: 'Ferris Wheel' },
+      { emoji: '🏰', name: 'Castle' },
+      { emoji: '🗼', name: 'Tower' },
+      { emoji: '⛩️', name: 'Shinto Shrine' },
+      { emoji: '🕌', name: 'Mosque' },
+      { emoji: '🛕', name: 'Hindu Temple' },
+      { emoji: '🏛️', name: 'Classical Building' },
+      { emoji: '🌍', name: 'Earth' },
+      { emoji: '🌙', name: 'Moon' },
+      { emoji: '☄️', name: 'Comet' },
+      { emoji: '🌊', name: 'Wave' },
+      { emoji: '🔥', name: 'Fire' },
+      { emoji: '❄️', name: 'Snowflake' },
+      { emoji: '🌪️', name: 'Tornado' },
+      { emoji: '⛰️', name: 'Mountain' },
+      { emoji: '🏝️', name: 'Desert Island' },
+      { emoji: '🌵', name: 'Cactus' },
+      { emoji: '🎑', name: 'Moon Ceremony' },
+      { emoji: '🪐', name: 'Saturn' },
+      { emoji: '💫', name: 'Shooting Star' },
+      { emoji: '🧬', name: 'DNA' },
+      { emoji: '⚗️', name: 'Alchemy' },
+      { emoji: '🔱', name: 'Trident' },
+      { emoji: '👑', name: 'Crown' },
+      { emoji: '💀', name: 'Skull' },
+      { emoji: '🤖', name: 'Robot' },
+      { emoji: '👽', name: 'Alien' },
+      { emoji: '👻', name: 'Ghost' },
+      { emoji: '🧙', name: 'Wizard' },
+      { emoji: '🧛', name: 'Vampire' },
+      { emoji: '🧜', name: 'Mermaid' },
+      { emoji: '🦸', name: 'Superhero' },
+      { emoji: '🦹', name: 'Supervillain' },
+      { emoji: '🎩', name: 'Top Hat' },
+      { emoji: '📿', name: 'Prayer Beads' },
+      { emoji: '🗡️', name: 'Sword' },
+    ]
+  },
+];
+
+// State
+const selections = [null, null, null, null, null];
+const reels = [];
+let spinning = false;
+
+function buildSlots() {
+  const grid = document.getElementById('slotsGrid');
+  CATEGORIES.forEach((cat, ci) => {
+    const col = document.createElement('div');
+    col.className = 'slot-col';
+
+    const label = document.createElement('div');
+    label.className = 'slot-label';
+    label.textContent = cat.label;
+    col.appendChild(label);
+
+    // Slot window
+    const win = document.createElement('div');
+    win.className = 'slot-window';
+    win.id = `slot-${ci}`;
+
+    const centerLine = document.createElement('div');
+    centerLine.className = 'center-line';
+    win.appendChild(centerLine);
+
+    // 3D specular highlight overlay
+    const innerHighlight = document.createElement('div');
+    innerHighlight.className = 'slot-window-inner';
+    win.appendChild(innerHighlight);
+
+    // Build reel: repeat items many times for scrolling
+    const reel = document.createElement('div');
+    reel.className = 'slot-reel';
+    reel.id = `reel-${ci}`;
+
+    const repeats = 8;
+    for (let r = 0; r < repeats; r++) {
+      cat.items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'slot-item';
+        div.textContent = item.emoji;
+        reel.appendChild(div);
+      });
+    }
+
+    win.appendChild(reel);
+    col.appendChild(win);
+
+    // Position reel between items so nothing is centered on load
+    const itemH = 80;
+    const winH = 240;
+    const offset = Math.floor(Math.random() * cat.items.length);
+    const centerOffset = (winH / 2);
+    reel.style.top = `${centerOffset - offset * itemH}px`;
+
+    // Click on slot window to open dropdown
+    win.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      const dd = document.getElementById(`dropdown-${ci}`);
+      dd.classList.toggle('open');
+      const input = document.getElementById(`filter-${ci}`);
+      if (dd.classList.contains('open')) {
+        input.focus();
+      }
+    });
+
+    // Filter input + dropdown
+    const manualDiv = document.createElement('div');
+    manualDiv.className = 'manual-select';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'filter-input';
+    input.placeholder = `Search ${cat.label.toLowerCase()}...`;
+    input.id = `filter-${ci}`;
+
+    const dd = document.createElement('div');
+    dd.className = 'dropdown';
+    dd.id = `dropdown-${ci}`;
+
+    cat.items.forEach((item, ii) => {
+      const opt = document.createElement('div');
+      opt.className = 'dropdown-item';
+      opt.dataset.name = item.name.toLowerCase();
+      opt.dataset.index = ii;
+      opt.innerHTML = `<span class="emoji">${item.emoji}</span> ${item.name}`;
+      opt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        selectManual(ci, ii);
+        dd.classList.remove('open');
+        input.value = '';
+        filterDropdown(ci, '');
+      });
+      dd.appendChild(opt);
+    });
+
+    input.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+      input.value = '';
+      input.classList.remove('has-selection');
+      filterDropdown(ci, '');
+      dd.classList.add('open');
+    });
+
+    input.addEventListener('focus', () => {
+      input.value = '';
+      input.classList.remove('has-selection');
+      filterDropdown(ci, '');
+    });
+
+    input.addEventListener('input', (e) => {
+      e.stopPropagation();
+      if (!dd.classList.contains('open')) dd.classList.add('open');
+      filterDropdown(ci, input.value);
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dd.classList.remove('open');
+        input.blur();
+      }
+    });
+
+    manualDiv.appendChild(input);
+    manualDiv.appendChild(dd);
+    col.appendChild(manualDiv);
+
+    grid.appendChild(col);
+    reels.push({ reel, win, itemCount: cat.items.length, itemH, winH });
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+  });
+
+  // Initial highlight
+  updateAllInView();
+  positionCenterBar();
+}
+
+function positionCenterBar() {
+  const wrapper = document.getElementById('slotsWrapper');
+  const firstWin = document.querySelector('.slot-window');
+  if (!firstWin || !wrapper) return;
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const winRect = firstWin.getBoundingClientRect();
+  const bar = document.getElementById('centerBar');
+  const winCenterY = winRect.top + winRect.height / 2 - wrapperRect.top;
+  bar.style.top = `${winCenterY}px`;
+}
+
+function updateInView(ci) {
+  const r = reels[ci];
+  const reelTop = parseFloat(r.reel.style.top) || 0;
+  const centerY = r.winH / 2;
+  const items = r.reel.querySelectorAll('.slot-item');
+  items.forEach((el, i) => {
+    const itemCenterY = i * r.itemH + r.itemH / 2 + reelTop;
+    const dist = Math.abs(itemCenterY - centerY);
+    if (dist < r.itemH * 0.6) {
+      el.classList.add('in-view');
+    } else {
+      el.classList.remove('in-view');
+    }
+  });
+}
+
+function updateAllInView() {
+  reels.forEach((_, ci) => updateInView(ci));
+}
+
+function filterDropdown(ci, query) {
+  const dd = document.getElementById(`dropdown-${ci}`);
+  const items = dd.querySelectorAll('.dropdown-item');
+  const q = query.toLowerCase().trim();
+  items.forEach(item => {
+    if (!q || item.dataset.name.includes(q)) {
+      item.style.display = '';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+function selectManual(catIdx, itemIdx) {
+  const cat = CATEGORIES[catIdx];
+  const item = cat.items[itemIdx];
+  selections[catIdx] = item;
+
+  // Animate reel to that item
+  const r = reels[catIdx];
+  r.reel.classList.add('visible');
+  const centerOffset = (r.winH / 2) - (r.itemH / 2);
+  // Target position: center of reel, use 3rd repeat
+  const targetIdx = cat.items.length * 3 + itemIdx;
+  const targetTop = centerOffset - targetIdx * r.itemH;
+
+  r.reel.style.transition = 'top 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+  r.reel.style.top = `${targetTop}px`;
+  r.win.classList.add('locked');
+
+  const input = document.getElementById(`filter-${catIdx}`);
+  input.value = `${item.emoji} ${item.name}`;
+  input.classList.add('has-selection');
+
+  setTimeout(() => {
+    r.reel.style.transition = 'none';
+    updateInView(catIdx);
+  }, 700);
+
+  // Immediate update too
+  requestAnimationFrame(() => updateInView(catIdx));
+
+  checkAllSelected();
+}
+
+function pullLever() {
+  if (spinning) return;
+  const arm = document.getElementById('leverArm');
+
+  // Animate the pull
+  arm.classList.remove('pulled');
+  void arm.offsetWidth; // reflow
+  arm.classList.add('pulled');
+
+  // Start reels after the lever reaches the bottom (250ms into animation)
+  setTimeout(() => spinAll(), 250);
+}
+
+function spinAll() {
+  if (spinning) return;
+  spinning = true;
+
+  const wrapper = document.getElementById('leverWrapper');
+  wrapper.classList.add('disabled');
+
+  document.getElementById('goSection').classList.remove('visible');
+
+  // Random target for each
+  const targets = CATEGORIES.map(cat => Math.floor(Math.random() * cat.items.length));
+
+  reels.forEach((r, ci) => {
+    const cat = CATEGORIES[ci];
+    r.win.classList.remove('locked');
+    r.win.classList.add('spinning');
+    r.reel.classList.add('visible');
+
+    // Animate: fast scroll, then decelerate to target
+    const centerOffset = (r.winH / 2) - (r.itemH / 2);
+    const targetIdx = cat.items.length * 5 + targets[ci];
+    const targetTop = centerOffset - targetIdx * r.itemH;
+
+    // Stagger stop times for each reel (casino feel)
+    const duration = 1.5 + ci * 0.5;
+
+    r.reel.style.transition = `top ${duration}s cubic-bezier(0.12, 0.8, 0.3, 1)`;
+    // Nudge to start spinning from wherever
+    requestAnimationFrame(() => {
+      r.reel.style.top = `${targetTop}px`;
+    });
+
+    // Update highlight during spin animation
+    const spinInterval = setInterval(() => updateInView(ci), 50);
+
+    setTimeout(() => {
+      clearInterval(spinInterval);
+      r.win.classList.remove('spinning');
+      r.win.classList.add('locked');
+      r.reel.style.transition = 'none';
+
+      selections[ci] = cat.items[targets[ci]];
+      updateInView(ci);
+
+      const minput = document.getElementById(`filter-${ci}`);
+      minput.value = `${selections[ci].emoji} ${selections[ci].name}`;
+      minput.classList.add('has-selection');
+
+      // If last reel, finalize
+      if (ci === CATEGORIES.length - 1) {
+        spinning = false;
+        wrapper.classList.remove('disabled');
+        checkAllSelected();
+      }
+    }, duration * 1000 + 100);
+  });
+}
+
+function checkAllSelected() {
+  const allDone = selections.every(s => s !== null);
+  document.getElementById('centerBar').classList.toggle('all-locked', allDone);
+  if (allDone) {
+    const goSection = document.getElementById('goSection');
+    goSection.classList.add('visible');
+
+    const preview = document.getElementById('selectionsPreview');
+    preview.innerHTML = selections.map(s => s.emoji).join('  ');
+  }
+}
+
+function generatePrompt() {
+  const [country, fruit, animal, action, surprise] = selections;
+
+  const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one.
+
+(a) Based on these parameters:
+
+country ${country.emoji}
+fruit ${fruit.emoji}
+animal ${animal.emoji}
+action ${action.emoji}
+fifth parameter [surprise me, you choose this]${surprise.emoji}
+
+write a short story in a single paragraph.
+
+(b) Take that short story and transform it into a research question for a Masters dissertation.
+
+(c) Conduct brief research focused on diagnosing a problem or opportunity. The output here will be a clear problem statement that includes a narrow customer/user segment in any sector (public or private)
+
+(d) Design a solution for it. This offering could be a physical product, a service or a hybrid solution. Define who the provider is, e.g., a startup, a branch of government or agency, a corporation, a non-profit organisation, etc.
+
+(e) Build a prototype complete with its design specs.
+
+(f) Create a world-class landing page for it (output as html file). Ensure it has one to three real-world photos. Again the design must be top-notch. Open the html page when finished.
+
+(g) Design a very professional business plan and a marketing campaign. Pitch this to investors (including reps from YCombinator, Tech Stars, Dogpatch Labs, and Blackrock Capital). Create the slides for this (html) and open them in a style aligned with the landing page. The slides must be visually striking, not text-heavy: use bold single-line statements, large hero numbers, real-world photos (via Unsplash or Pexels URLs), simple data visualisations built in CSS, and pull the same colour palette, typography, and design language from the landing page. Each slide should feel like a full-bleed magazine spread, not a bullet-point document. Minimise words per slide; maximise visual impact. When relevant, add progressive reveal of key elements within slides. Title the last slide 'Lessons Learned' and write 6 or 7 bullet points reflecting on the whole experience. Give it a favicon.
+
+(h) Create a local project folder for all and commit to corresponding GitHub repository then publish to a live GitHub Page and open it. Give it a favicon. (Skip this step only if you do not have these skills or permissions).`;
+
+  // Press the button down, then transition
+  const goBtn = document.getElementById('goBtn');
+  goBtn.classList.add('pressed');
+  goBtn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('promptView').style.display = 'flex';
+    document.getElementById('promptBox').textContent = prompt;
+    goBtn.classList.remove('pressed');
+    goBtn.style.pointerEvents = '';
+    generateBrief(country, fruit, animal, action, surprise);
+  }, 650);
+}
+
+function generateBrief(country, fruit, animal, action, surprise) {
+  const briefHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Creative Pipeline Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; min-height: 100vh; font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; background: #fff; }
+  body { max-width: 1050px; margin: 0 auto; padding: 60px 48px 48px 48px; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+  body::after {
+    content: '';
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 580px; height: 580px;
+    transform: translate(-50%, -50%);
+    opacity: 0.035;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%231a1a2e'%3E%3Cpath d='M176 464h160a16 16 0 0 1 0 32H176a16 16 0 0 1 0-32zm16-48h128a16 16 0 0 1 0 32H192a16 16 0 0 1 0-32zm137.6-80C367 306 400 261.7 400 208c0-79.5-64.5-144-144-144S112 128.5 112 208c0 53.7 33 98 79.4 128H192v48h128v-48h-14.4zM256 0c132.5 0 208 93.7 208 208 0 75.2-36.9 141.7-93.4 182.6V416a32 32 0 0 1-32 32H173.4a32 32 0 0 1-32-32v-25.4C84.9 349.7 48 283.2 48 208 48 93.7 123.5 0 256 0z'/%3E%3Cpath d='M272 96v80h80a16 16 0 0 1 0 32h-80v16a16 16 0 0 1-32 0v-16h-80a16 16 0 0 1 0-32h80V96a16 16 0 0 1 32 0z' opacity='.3'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .topbar { position: fixed; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, #7c4dff, #00e676); z-index: 10; }
+
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 3px solid #1a1a2e; }
+  .header-left h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
+  .header-left .subtitle { font-size: 19px; color: #666; font-weight: 400; margin-top: 4px; }
+  .header-right { text-align: right; font-size: 18px; color: #888; line-height: 1.7; }
+
+  .params-row { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .param-chip { flex: 1; min-width: 140px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 10px; background: #f5f5fa; border: 1px solid #e0e0ea; border-radius: 12px; }
+  .param-emoji { font-size: 43px; }
+  .param-text { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: #555; }
+
+  .intro { font-size: 20px; line-height: 1.7; color: #333; margin-bottom: 28px; }
+
+  .steps { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-marker { width: 43px; height: 43px; border-radius: 50%; background: #1a1a2e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 19px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 20px; font-weight: 700; margin-bottom: 3px; }
+  .step-desc { font-size: 18px; color: #444; line-height: 1.6; }
+  .step-tag { display: inline-block; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 10px; border-radius: 4px; margin-top: 4px; }
+  .tag-creative { background: #f0e6ff; color: #7c4dff; }
+  .tag-research { background: #e3f2fd; color: #1565c0; }
+  .tag-build { background: #e8f5e9; color: #2e7d32; }
+  .tag-business { background: #fff3e0; color: #e65100; }
+  .tag-deliver { background: #fce4ec; color: #c62828; }
+
+  .footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+  .footer-left { font-size: 17px; color: #999; }
+  .footer-right { font-size: 17px; color: #999; font-style: italic; }
+</style>
+</head>
+<body>
+  <div class="topbar"></div>
+
+  <div class="header">
+    <div class="header-left">
+      <h1>The AI Innovator</h1>
+      <div class="subtitle">Concept-to-Market Challenge</div>
+    </div>
+    <div class="header-right">
+      Date: ${new Date().toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
+      Format: Individual or Team of 2<br>
+      Tools: Your brain, Google, pen and paper,<br>any software you already know
+    </div>
+  </div>
+
+  <div class="params-row">
+    <div class="param-chip"><span class="param-emoji">${country.emoji}</span><span class="param-text">${country.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${fruit.emoji}</span><span class="param-text">${fruit.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${animal.emoji}</span><span class="param-text">${animal.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${action.emoji}</span><span class="param-text">${action.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${surprise.emoji}</span><span class="param-text">${surprise.name}</span></div>
+  </div>
+
+  <div class="intro">
+    <strong>Your challenge:</strong> Starting from five random creative parameters, execute a full concept-to-market pipeline. Each step builds on the output of the previous one. You will move from a short story to a research question, a validated problem, a designed solution, a working prototype, a landing page, and a pitch deck. Work through every step yourself. Estimate how long the entire exercise would take you, then write that estimate at the top of your submission.
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-marker">a</div>
+      <div class="step-content">
+        <div class="step-title">Short Story</div>
+        <div class="step-desc">Write a single-paragraph story that weaves together all five parameters above. The story should be vivid, specific, and set in ${country.name}.</div>
+        <span class="step-tag tag-creative">Creative Writing</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">b</div>
+      <div class="step-content">
+        <div class="step-title">Research Question</div>
+        <div class="step-desc">Transform your story into a genuine research question suitable for a Masters dissertation. It must be specific, researchable, and grounded in a real academic domain.</div>
+        <span class="step-tag tag-research">Research</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">c</div>
+      <div class="step-content">
+        <div class="step-title">Problem Statement</div>
+        <div class="step-desc">Research and diagnose a real problem or opportunity inspired by your question. Write a clear problem statement that identifies a narrow customer or user segment in any sector.</div>
+        <span class="step-tag tag-research">Research</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">d</div>
+      <div class="step-content">
+        <div class="step-title">Solution Design</div>
+        <div class="step-desc">Design a solution: a physical product, a service, or a hybrid. Define who the provider is (startup, government agency, corporation, NGO, etc.) and describe the offering in detail.</div>
+        <span class="step-tag tag-build">Design</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">e</div>
+      <div class="step-content">
+        <div class="step-title">Prototype + Design Specs</div>
+        <div class="step-desc">Create a prototype with design specifications: features, architecture, user flows, brand guidelines, and an MVP development timeline.</div>
+        <span class="step-tag tag-build">Build</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">f</div>
+      <div class="step-content">
+        <div class="step-title">Landing Page</div>
+        <div class="step-desc">Design and build a professional landing page for your solution. It should include real imagery, a clear value proposition, pricing, and a call to action. Deliver as a working HTML file.</div>
+        <span class="step-tag tag-build">Build</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">g</div>
+      <div class="step-content">
+        <div class="step-title">Business Plan + Investor Pitch Deck</div>
+        <div class="step-desc">Write a business plan and marketing campaign. Create a visually striking slide deck (10 slides) pitched to YCombinator, TechStars, Dogpatch Labs, and BlackRock Capital. Slides should use bold statements, large numbers, photos, and data visualisations. Minimise text; maximise visual impact. When relevant, add progressive reveal of key elements within slides. Final slide: 6 or 7 bullet points on lessons learned.</div>
+        <span class="step-tag tag-business">Business</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-marker">h</div>
+      <div class="step-content">
+        <div class="step-title">Publish Online</div>
+        <div class="step-desc">Organise all deliverables into a project folder. Publish the landing page and pitch deck to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
+        <span class="step-tag tag-deliver">Deliver</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">The AI Innovator &middot; ${new Date().toLocaleDateString('en-IE')}</div>
+    <div class="footer-right">"From five random emojis to a live startup. How long would it take you?"</div>
+  </div>
+</body>
+</html>`;
+
+  const briefWindow = window.open('', '_blank');
+  briefWindow.document.write(briefHTML);
+  briefWindow.document.close();
+}
+
+function copyPrompt() {
+  const text = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    const copyIcon = document.getElementById('copyIcon');
+    const checkIcon = document.getElementById('checkIcon');
+    const tooltip = document.getElementById('copyTooltip');
+
+    btn.classList.add('copied');
+    copyIcon.style.display = 'none';
+    checkIcon.style.display = 'block';
+    tooltip.textContent = 'Copied!';
+
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      copyIcon.style.display = 'block';
+      checkIcon.style.display = 'none';
+      tooltip.textContent = 'Copy to clipboard';
+    }, 2000);
+  });
+}
+
+function resetAll() {
+  selections.fill(null);
+  document.getElementById('mainView').style.display = 'flex';
+  document.getElementById('promptView').style.display = 'none';
+  document.getElementById('goSection').classList.remove('visible');
+
+  reels.forEach((r, ci) => {
+    r.win.classList.remove('locked', 'spinning');
+    const offset = Math.floor(Math.random() * CATEGORIES[ci].items.length);
+    const centerOffset = (r.winH / 2) - (r.itemH / 2);
+    r.reel.style.top = `${centerOffset - offset * r.itemH}px`;
+
+    const input = document.getElementById(`filter-${ci}`);
+    input.value = '';
+    input.classList.remove('has-selection');
+    filterDropdown(ci, '');
+  });
+  updateAllInView();
+  document.getElementById('centerBar').classList.remove('all-locked');
+}
+
+// Init
+buildSlots();
+window.addEventListener('resize', positionCenterBar);
+</script>
+</body>
+</html>
