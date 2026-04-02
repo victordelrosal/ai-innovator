@@ -93,57 +93,72 @@
   .spot {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    will-change: transform;
+    filter: blur(60px);
+    will-change: transform, opacity;
   }
-  /* Deep purple */
+  /* Deep purple spotlight */
   .spot-1 {
-    width: 50vw; height: 50vw;
-    top: -10%; left: -5%;
-    background: radial-gradient(circle, rgba(100, 40, 200, 0.12) 0%, transparent 70%);
-    animation: drift1 25s ease-in-out infinite;
-  }
-  /* Emerald green */
-  .spot-2 {
-    width: 45vw; height: 45vw;
-    bottom: -5%; right: -10%;
-    background: radial-gradient(circle, rgba(0, 200, 100, 0.08) 0%, transparent 70%);
-    animation: drift2 30s ease-in-out infinite;
-  }
-  /* Royal dark blue */
-  .spot-3 {
-    width: 55vw; height: 55vw;
-    top: 20%; left: 30%;
-    background: radial-gradient(circle, rgba(15, 20, 80, 0.2) 0%, transparent 65%);
-    animation: drift3 35s ease-in-out infinite;
-  }
-  /* Mexican pink - subtle accent */
-  .spot-4 {
     width: 30vw; height: 30vw;
-    top: 60%; left: 10%;
-    background: radial-gradient(circle, rgba(220, 50, 120, 0.06) 0%, transparent 70%);
-    animation: drift4 22s ease-in-out infinite;
+    top: -5%; left: 5%;
+    background: radial-gradient(circle, rgba(100, 40, 200, 0.18) 0%, rgba(100, 40, 200, 0.06) 40%, transparent 60%);
+    animation: drift1 22s ease-in-out infinite, pulse1 8s ease-in-out infinite;
   }
-  /* Pink highlight - top right */
-  .spot-5 {
-    width: 25vw; height: 25vw;
-    top: 5%; right: 15%;
-    background: radial-gradient(circle, rgba(230, 70, 140, 0.05) 0%, transparent 70%);
-    animation: drift5 28s ease-in-out infinite;
+  /* Emerald green spotlight */
+  .spot-2 {
+    width: 28vw; height: 28vw;
+    bottom: 5%; right: 0%;
+    background: radial-gradient(circle, rgba(0, 200, 100, 0.14) 0%, rgba(0, 200, 100, 0.04) 40%, transparent 60%);
+    animation: drift2 26s ease-in-out infinite, pulse2 10s ease-in-out infinite;
   }
-  /* Purple-pink accent - mid */
-  .spot-6 {
+  /* Royal blue spotlight */
+  .spot-3 {
     width: 35vw; height: 35vw;
-    top: 40%; right: -5%;
-    background: radial-gradient(circle, rgba(140, 50, 180, 0.07) 0%, transparent 70%);
-    animation: drift1 32s ease-in-out infinite reverse;
+    top: 25%; left: 35%;
+    background: radial-gradient(circle, rgba(20, 30, 120, 0.22) 0%, rgba(20, 30, 120, 0.08) 35%, transparent 55%);
+    animation: drift3 30s ease-in-out infinite, pulse3 12s ease-in-out infinite;
   }
-  /* Deep green whisper - bottom left */
+  /* Mexican pink spotlight */
+  .spot-4 {
+    width: 22vw; height: 22vw;
+    top: 55%; left: 15%;
+    background: radial-gradient(circle, rgba(220, 50, 120, 0.1) 0%, rgba(220, 50, 120, 0.03) 40%, transparent 58%);
+    animation: drift4 18s ease-in-out infinite, pulse1 9s ease-in-out infinite 2s;
+  }
+  /* Warm pink spotlight */
+  .spot-5 {
+    width: 20vw; height: 20vw;
+    top: 10%; right: 10%;
+    background: radial-gradient(circle, rgba(230, 70, 140, 0.08) 0%, rgba(230, 70, 140, 0.02) 40%, transparent 58%);
+    animation: drift5 24s ease-in-out infinite, pulse2 7s ease-in-out infinite 1s;
+  }
+  /* Violet spotlight */
+  .spot-6 {
+    width: 25vw; height: 25vw;
+    top: 40%; right: 5%;
+    background: radial-gradient(circle, rgba(140, 50, 180, 0.12) 0%, rgba(140, 50, 180, 0.04) 38%, transparent 56%);
+    animation: drift1 28s ease-in-out infinite reverse, pulse3 11s ease-in-out infinite;
+  }
+  /* Teal spotlight */
   .spot-7 {
-    width: 40vw; height: 40vw;
-    bottom: 10%; left: -10%;
-    background: radial-gradient(circle, rgba(0, 150, 80, 0.05) 0%, transparent 70%);
-    animation: drift5 27s ease-in-out infinite reverse;
+    width: 26vw; height: 26vw;
+    bottom: 15%; left: -5%;
+    background: radial-gradient(circle, rgba(0, 150, 120, 0.09) 0%, rgba(0, 150, 120, 0.03) 38%, transparent 56%);
+    animation: drift5 23s ease-in-out infinite reverse, pulse1 13s ease-in-out infinite 3s;
+  }
+
+  /* Subtle breathing/pulsing - no color shift, just intensity */
+  @keyframes pulse1 {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.5; }
+  }
+  @keyframes pulse2 {
+    0%, 100% { opacity: 0.7; }
+    35%      { opacity: 1; }
+    70%      { opacity: 0.4; }
+  }
+  @keyframes pulse3 {
+    0%, 100% { opacity: 0.8; }
+    50%      { opacity: 1; }
   }
 
   .container {
@@ -169,7 +184,7 @@
     pointer-events: none;
   }
   .header h1 {
-    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    font-size: clamp(3.3rem, 6.4vw, 5.4rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     background: linear-gradient(135deg, #fff 0%, #aaa 100%);
@@ -179,9 +194,10 @@
     margin-bottom: 6px;
   }
   .header p {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     color: var(--text-dim);
-    font-weight: 400;
+    font-weight: 300;
+    letter-spacing: 0.06em;
   }
 
   /* Slot Machine Grid */
@@ -345,23 +361,21 @@
     position: relative;
     width: 100%;
   }
-  .center-bar {
+  .center-bar { display: none; }
+
+  /* Per-slot focus line - renders only over each drum */
+  .slot-focus-line {
     position: absolute;
+    left: 0;
+    right: 0;
     top: 50%;
-    left: -16px;
-    right: -16px;
-    height: 86px;
+    height: 80px;
     transform: translateY(-50%);
-    border: 1.5px solid rgba(124, 77, 255, 0.1);
-    border-radius: 6px;
-    z-index: 10;
+    border-top: 1.5px solid rgba(124, 77, 255, 0.12);
+    border-bottom: 1.5px solid rgba(124, 77, 255, 0.12);
+    z-index: 4;
     pointer-events: none;
     background: rgba(124, 77, 255, 0.015);
-    transition: border-color 0.4s, background 0.4s, box-shadow 0.4s;
-  }
-  .center-bar.all-locked {
-    border-color: rgba(124, 77, 255, 0.15);
-    background: rgba(124, 77, 255, 0.02);
   }
 
   /* Hide per-slot center lines */
@@ -1048,7 +1062,7 @@
 <div class="container" id="promptView" style="display:none;">
   <div class="header">
     <h1>Your Prompt</h1>
-    <p>Copy and paste this into Claude Code.</p>
+    <p>Copy and paste into your AI.</p>
   </div>
 
   <div class="prompt-section visible">
@@ -1567,9 +1581,10 @@ function buildSlots() {
     win.className = 'slot-window';
     win.id = `slot-${ci}`;
 
-    const centerLine = document.createElement('div');
-    centerLine.className = 'center-line';
-    win.appendChild(centerLine);
+    // Focus line overlay (per-slot, aligned to item height)
+    const focusLine = document.createElement('div');
+    focusLine.className = 'slot-focus-line';
+    win.appendChild(focusLine);
 
     // 3D specular highlight overlay
     const innerHighlight = document.createElement('div');
