@@ -1041,6 +1041,62 @@
     background: #fff;
   }
 
+  /* Showcase */
+  .showcase {
+    width: 100%;
+    margin-top: 32px;
+  }
+  .showcase-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .showcase-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .showcase-scroll::-webkit-scrollbar { height: 4px; }
+  .showcase-scroll::-webkit-scrollbar-track { background: transparent; }
+  .showcase-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .showcase-item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    scroll-snap-align: start;
+    transition: transform 0.2s;
+  }
+  .showcase-item:hover { transform: translateY(-4px); }
+  .showcase-thumb {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.25s;
+  }
+  .showcase-item:hover .showcase-thumb {
+    box-shadow: 0 8px 24px rgba(124, 77, 255, 0.2);
+  }
+  .showcase-emoji { font-size: 2.4rem; }
+  .showcase-name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+  }
+
   /* Mobile spin button (hidden on desktop) */
   .spin-btn-mobile {
     display: none;
@@ -1215,6 +1271,54 @@
   </div>
 
   <button class="reset-btn" onclick="goBack()">Go Back</button>
+
+  <div class="showcase">
+    <div class="showcase-label">Built with The AI Innovator</div>
+    <div class="showcase-scroll">
+      <a class="showcase-item" href="https://victordelrosal.com/sivuno/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #2d6a4f, #95d5b2);">
+          <span class="showcase-emoji">🌾</span>
+        </div>
+        <span class="showcase-name">Sivuno</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/groundsense-project/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #5a189a, #c77dff);">
+          <span class="showcase-emoji">🌿</span>
+        </div>
+        <span class="showcase-name">GroundSense</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/tidewatch/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #023e8a, #48cae4);">
+          <span class="showcase-emoji">🌊</span>
+        </div>
+        <span class="showcase-name">TideWatch</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/milpa/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #b08968, #e6ccb2);">
+          <span class="showcase-emoji">🌽</span>
+        </div>
+        <span class="showcase-name">Milpa</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/chromaroot/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #9d0208, #f48c06);">
+          <span class="showcase-emoji">🎨</span>
+        </div>
+        <span class="showcase-name">ChromaRoot</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/nutrir/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #606c38, #dda15e);">
+          <span class="showcase-emoji">🥗</span>
+        </div>
+        <span class="showcase-name">Nutrir</span>
+      </a>
+      <a class="showcase-item" href="https://victordelrosal.com/intersect/" target="_blank">
+        <div class="showcase-thumb" style="background: linear-gradient(135deg, #1a1a2e, #7c4dff);">
+          <span class="showcase-emoji">🤖</span>
+        </div>
+        <span class="showcase-name">Intersect</span>
+      </a>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->
