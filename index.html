@@ -2286,30 +2286,47 @@ function exportBriefPdf() {
   btn.style.opacity = '0.5';
   btn.style.pointerEvents = 'none';
 
-  // Open the brief in a hidden iframe, let it fully render, then capture
+  // Inject html2pdf into the brief HTML and run it from inside the iframe
+  // so html2canvas captures styles from the correct document context
+  const lib = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js';
+  const exportScript = `
+    <script src="${lib}"><\/script>
+    <script>
+      window.addEventListener('message', function(e) {
+        if (e.data !== 'exportPdf') return;
+        html2pdf().set({
+          margin: 0,
+          filename: 'AI-Innovator-Brief.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        }).from(document.body).save().then(function() {
+          window.parent.postMessage('pdfDone', '*');
+        });
+      });
+      window.parent.postMessage('pdfReady', '*');
+    <\/script>`;
+
+  const briefWithScript = window._generatedBrief.replace('</body>', exportScript + '</body>');
+
   const frame = document.createElement('iframe');
   frame.style.cssText = 'position:fixed;top:0;left:0;width:1050px;height:1485px;opacity:0;z-index:-1;';
   document.body.appendChild(frame);
 
-  frame.onload = () => {
-    const body = frame.contentDocument.body;
-    // Wait for fonts + paint
-    setTimeout(() => {
-      html2pdf().set({
-        margin: 0,
-        filename: 'AI-Innovator-Brief.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, width: 1050, height: 1485, windowWidth: 1050 },
-        jsPDF: { unit: 'px', format: [1050, 1485], hotfixes: ['px_scaling'] }
-      }).from(body).save().then(() => {
-        document.body.removeChild(frame);
-        btn.style.opacity = '';
-        btn.style.pointerEvents = '';
-      });
-    }, 500);
-  };
+  function onMessage(e) {
+    if (e.data === 'pdfReady') {
+      // Brief is rendered and script is loaded; trigger export
+      frame.contentWindow.postMessage('exportPdf', '*');
+    } else if (e.data === 'pdfDone') {
+      window.removeEventListener('message', onMessage);
+      document.body.removeChild(frame);
+      btn.style.opacity = '';
+      btn.style.pointerEvents = '';
+    }
+  }
+  window.addEventListener('message', onMessage);
 
-  frame.srcdoc = window._generatedBrief;
+  frame.srcdoc = briefWithScript;
 }
 
 function resetAll() {
