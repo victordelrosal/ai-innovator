@@ -2093,7 +2093,7 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
   @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { width: 100%; min-height: 100vh; font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; background: #fff; }
-  body { max-width: 1050px; margin: 0 auto; padding: 56px 48px 48px 48px; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
+  body { max-width: 1050px; margin: 0 auto; padding: 0 48px 48px 48px; display: flex; flex-direction: column; position: relative; overflow-x: hidden; }
   body::after {
     content: '';
     position: fixed;
@@ -2108,19 +2108,19 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
     background-position: center;
   }
 
-  .topbar { position: fixed; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, #7c4dff, #00e676); z-index: 10; }
+  .topbar { height: 8px; background: linear-gradient(90deg, #7c4dff, #00e676); margin: 0 -48px 28px -48px; }
 
-  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 3px solid #1a1a2e; }
-  .header-left h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
-  .header-left .subtitle { font-size: 19px; color: #666; font-weight: 400; margin-top: 4px; }
-  .header-right { text-align: right; font-size: 18px; color: #888; line-height: 1.7; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 3px solid #1a1a2e; }
+  .header-left h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
+  .header-left .subtitle { font-size: 17px; color: #666; font-weight: 400; margin-top: 3px; }
+  .header-right { text-align: right; font-size: 16px; color: #888; line-height: 1.5; }
 
-  .params-row { display: flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
-  .param-chip { flex: 1; min-width: 140px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 10px; background: #f5f5fa; border: 1px solid #e0e0ea; border-radius: 12px; }
-  .param-emoji { font-size: 43px; }
+  .params-row { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .param-chip { flex: 1; min-width: 140px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 10px; background: #f5f5fa; border: 1px solid #e0e0ea; border-radius: 12px; }
+  .param-emoji { font-size: 38px; }
   .param-text { font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: #555; }
 
-  .intro { font-size: 20px; line-height: 1.7; color: #333; margin-bottom: 22px; }
+  .intro { font-size: 16px; line-height: 1.5; color: #333; margin-bottom: 18px; }
 
   .steps { flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .step { display: flex; gap: 14px; align-items: flex-start; }
@@ -2140,7 +2140,8 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
   .footer-right { font-size: 15px; color: #999; font-style: italic; }
 
   @media (max-width: 640px) {
-    body { padding: 24px 16px 24px 16px; }
+    body { padding: 0 16px 24px 16px; }
+    .topbar { margin: 0 -16px 16px -16px; }
     .header { flex-direction: column; gap: 12px; }
     .header-left h1 { font-size: 24px; }
     .header-left .subtitle { font-size: 15px; }
