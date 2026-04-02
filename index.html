@@ -2326,7 +2326,7 @@ function exportBriefPdf() {
       window.addEventListener('message', function(e) {
         if (e.data !== 'exportPdf') return;
         html2pdf().set({
-          margin: 0,
+          margin: [20, 0, 20, 0],
           filename: 'AI-Innovator-Brief.pdf',
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true },
