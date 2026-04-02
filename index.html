@@ -878,29 +878,110 @@
   }
 
   /* Prompt Output */
-  .prompt-section {
-    display: none;
+  /* Cards grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
     width: 100%;
-    flex-direction: column;
-    gap: 14px;
     animation: fadeUp 0.5s ease-out;
   }
-  .prompt-section.visible { display: flex; }
+  .result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-height: 220px;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .result-card--prompt::before { background: linear-gradient(135deg, rgba(124, 77, 255, 0.06), rgba(0, 230, 118, 0.06)); }
+  .result-card--brief::before { background: linear-gradient(135deg, rgba(0, 230, 118, 0.06), rgba(124, 77, 255, 0.06)); }
+  .result-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(124, 77, 255, 0.15);
+  }
+  .result-card:hover::before { opacity: 1; }
+  .card-icon { font-size: 2.8rem; position: relative; z-index: 1; }
+  .card-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    position: relative;
+    z-index: 1;
+  }
+  .card-hint {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    position: relative;
+    z-index: 1;
+  }
 
-  .prompt-header {
+  /* Modal overlay */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    animation: fadeIn 0.25s ease-out;
+  }
+  .modal-overlay.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    width: 100%;
+    max-width: 820px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideUp 0.3s ease-out;
+    overflow: hidden;
+  }
+  @keyframes modalSlideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
-  .prompt-title {
-    font-size: 0.8rem;
+  .modal-title {
+    font-size: 0.9rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-dim);
   }
+  .modal-actions { display: flex; gap: 8px; }
 
-  .copy-btn {
+  .modal-close, .modal-copy {
     width: 40px; height: 40px;
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -912,52 +993,34 @@
     transition: all 0.25s;
     position: relative;
   }
-  .copy-btn:hover {
-    border-color: var(--green);
-    background: rgba(0, 230, 118, 0.08);
-  }
-  .copy-btn svg { width: 18px; height: 18px; stroke: var(--text-dim); fill: none; stroke-width: 2; transition: stroke 0.25s; }
-  .copy-btn:hover svg { stroke: var(--green); }
-  .copy-btn.copied {
-    border-color: var(--green);
-    background: rgba(0, 230, 118, 0.12);
-  }
-  .copy-btn.copied svg { stroke: var(--green); }
+  .modal-close:hover { border-color: #ff5252; background: rgba(255, 82, 82, 0.08); }
+  .modal-close:hover svg { stroke: #ff5252; }
+  .modal-copy:hover { border-color: var(--green); background: rgba(0, 230, 118, 0.08); }
+  .modal-copy:hover svg { stroke: var(--green); }
+  .modal-close svg, .modal-copy svg { width: 18px; height: 18px; stroke: var(--text-dim); fill: none; stroke-width: 2; transition: stroke 0.25s; }
+  .modal-copy.copied { border-color: var(--green); background: rgba(0, 230, 118, 0.12); }
+  .modal-copy.copied svg { stroke: var(--green); }
 
-  .copy-tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.72rem;
-    color: var(--text-dim);
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-  .copy-btn:hover .copy-tooltip { opacity: 1; }
-  .copy-btn.copied .copy-tooltip { color: var(--green); }
-
-  .prompt-box {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+  .modal-body {
     padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .modal-body--text {
     font-family: 'Inter', monospace;
     font-size: 0.82rem;
     line-height: 1.7;
     color: var(--text);
     white-space: pre-wrap;
     word-wrap: break-word;
-    max-height: 500px;
-    overflow-y: auto;
     user-select: all;
+  }
+  .modal-body--brief iframe {
+    width: 100%;
+    height: 70vh;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
   }
 
   /* Back / Reset */
@@ -992,6 +1055,9 @@
     .slot-item { height: 60px; border-bottom: 1px solid rgba(60, 60, 80, 0.12); border-top: 1px solid rgba(0, 0, 0, 0.25); }
     .go-btn { width: 240px; height: 72px; font-size: 1.8rem; border-radius: 36px; }
     .selections-preview { font-size: 2rem; }
+    .cards-grid { grid-template-columns: 1fr; gap: 16px; }
+    .result-card { min-height: 160px; }
+    .modal-content { max-height: 90vh; }
   }
 
   /* Scrollbar */
@@ -1061,28 +1127,50 @@
 
 <div class="container" id="promptView" style="display:none;">
   <div class="header">
-    <h1>Your Prompt</h1>
-    <p>Copy and paste into your AI.</p>
+    <h1>Ready</h1>
+    <p>Click a card to view. Copy the prompt and paste it into your AI.</p>
   </div>
 
-  <div class="prompt-section visible">
-    <div class="prompt-header">
-      <span class="prompt-title">Generated prompt</span>
-      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
-        <span class="copy-tooltip" id="copyTooltip">Copy to clipboard</span>
-        <svg id="copyIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-        </svg>
-        <svg id="checkIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </button>
+  <div class="cards-grid">
+    <div class="result-card result-card--prompt" onclick="openModal('prompt')">
+      <div class="card-icon">📋</div>
+      <div class="card-label">The Prompt</div>
+      <div class="card-hint">Click to view and copy</div>
     </div>
-    <div class="prompt-box" id="promptBox"></div>
+    <div class="result-card result-card--brief" onclick="openModal('brief')">
+      <div class="card-icon">📄</div>
+      <div class="card-label">The Brief</div>
+      <div class="card-hint">Click to preview</div>
+    </div>
   </div>
 
   <button class="reset-btn" onclick="resetAll()">Start Over</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle"></span>
+      <div class="modal-actions">
+        <button class="modal-copy" id="modalCopyBtn" onclick="copyFromModal()" style="display:none;">
+          <svg id="modalCopyIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+          </svg>
+          <svg id="modalCheckIcon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </button>
+        <button class="modal-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
 </div>
 
 <script>
@@ -1494,7 +1582,7 @@ const CATEGORIES = [
     ]
   },
   {
-    key: 'surprise', label: 'Surprise',
+    key: 'wildCard', label: 'Wild Card',
     items: [
       { emoji: '🌋', name: 'Volcano' },
       { emoji: '🎪', name: 'Circus' },
@@ -1864,7 +1952,7 @@ function checkAllSelected() {
 }
 
 function generatePrompt() {
-  const [country, fruit, animal, action, surprise] = selections;
+  const [country, fruit, animal, action, wildCard] = selections;
 
   const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one.
 
@@ -1874,7 +1962,7 @@ country ${country.emoji}
 fruit ${fruit.emoji}
 animal ${animal.emoji}
 action ${action.emoji}
-fifth parameter [surprise me, you choose this]${surprise.emoji}
+fifth parameter [surprise me, you choose this]${wildCard.emoji}
 
 write a short story in a single paragraph.
 
@@ -1892,6 +1980,10 @@ write a short story in a single paragraph.
 
 (h) Create a local project folder for all and commit to corresponding GitHub repository then publish to a live GitHub Page and open it. Give it a favicon. (Skip this step only if you do not have these skills or permissions).`;
 
+  // Store for modal access
+  window._generatedPrompt = prompt;
+  window._generatedBrief = null;
+
   // Press the button down, then transition
   const goBtn = document.getElementById('goBtn');
   goBtn.classList.add('pressed');
@@ -1900,14 +1992,13 @@ write a short story in a single paragraph.
   setTimeout(() => {
     document.getElementById('mainView').style.display = 'none';
     document.getElementById('promptView').style.display = 'flex';
-    document.getElementById('promptBox').textContent = prompt;
     goBtn.classList.remove('pressed');
     goBtn.style.pointerEvents = '';
-    generateBrief(country, fruit, animal, action, surprise);
+    window._generatedBrief = buildBriefHTML(country, fruit, animal, action, wildCard);
   }, 650);
 }
 
-function generateBrief(country, fruit, animal, action, surprise) {
+function buildBriefHTML(country, fruit, animal, action, wildCard) {
   const briefHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1985,7 +2076,7 @@ function generateBrief(country, fruit, animal, action, surprise) {
     <div class="param-chip"><span class="param-emoji">${fruit.emoji}</span><span class="param-text">${fruit.name}</span></div>
     <div class="param-chip"><span class="param-emoji">${animal.emoji}</span><span class="param-text">${animal.name}</span></div>
     <div class="param-chip"><span class="param-emoji">${action.emoji}</span><span class="param-text">${action.name}</span></div>
-    <div class="param-chip"><span class="param-emoji">${surprise.emoji}</span><span class="param-text">${surprise.name}</span></div>
+    <div class="param-chip"><span class="param-emoji">${wildCard.emoji}</span><span class="param-text">${wildCard.name}</span></div>
   </div>
 
   <div class="intro">
@@ -2066,29 +2157,56 @@ function generateBrief(country, fruit, animal, action, surprise) {
 </body>
 </html>`;
 
-  const briefWindow = window.open('', '_blank');
-  briefWindow.document.write(briefHTML);
-  briefWindow.document.close();
+  return briefHTML;
 }
 
-function copyPrompt() {
-  const text = document.getElementById('promptBox').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    const copyIcon = document.getElementById('copyIcon');
-    const checkIcon = document.getElementById('checkIcon');
-    const tooltip = document.getElementById('copyTooltip');
+function openModal(type) {
+  const overlay = document.getElementById('modalOverlay');
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+  const copyBtn = document.getElementById('modalCopyBtn');
+
+  if (type === 'prompt') {
+    title.textContent = 'Generated Prompt';
+    body.className = 'modal-body modal-body--text';
+    body.textContent = window._generatedPrompt;
+    copyBtn.style.display = 'flex';
+  } else {
+    title.textContent = 'Innovation Brief';
+    body.className = 'modal-body modal-body--brief';
+    body.innerHTML = '<iframe id="briefIframe"></iframe>';
+    const iframe = document.getElementById('briefIframe');
+    iframe.srcdoc = window._generatedBrief;
+    copyBtn.style.display = 'none';
+  }
+
+  overlay.classList.add('active');
+  document.addEventListener('keydown', modalEscHandler);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.removeEventListener('keydown', modalEscHandler);
+}
+
+function modalEscHandler(e) {
+  if (e.key === 'Escape') closeModal();
+}
+
+function copyFromModal() {
+  navigator.clipboard.writeText(window._generatedPrompt).then(() => {
+    const btn = document.getElementById('modalCopyBtn');
+    const copyIcon = document.getElementById('modalCopyIcon');
+    const checkIcon = document.getElementById('modalCheckIcon');
 
     btn.classList.add('copied');
     copyIcon.style.display = 'none';
     checkIcon.style.display = 'block';
-    tooltip.textContent = 'Copied!';
 
     setTimeout(() => {
       btn.classList.remove('copied');
       copyIcon.style.display = 'block';
       checkIcon.style.display = 'none';
-      tooltip.textContent = 'Copy to clipboard';
     }, 2000);
   });
 }
