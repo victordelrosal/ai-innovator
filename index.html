@@ -408,8 +408,8 @@
     opacity: 0.08;
     filter: grayscale(0.9) brightness(0.35);
     position: relative;
-    border-bottom: 1px solid rgba(60, 60, 80, 0.15);
-    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(120, 120, 150, 0.18);
+    border-top: 1px solid rgba(80, 80, 110, 0.12);
   }
   .slot-item.in-view {
     opacity: 1;
@@ -1942,49 +1942,51 @@ function spinAll() {
   // Random target for each
   const targets = CATEGORIES.map(cat => Math.floor(Math.random() * cat.items.length));
 
+  // Random start delays so reels feel uncoordinated
+  const startDelays = CATEGORIES.map(() => Math.random() * 300);
+
   reels.forEach((r, ci) => {
     const cat = CATEGORIES[ci];
     r.win.classList.remove('locked');
     r.win.classList.add('spinning');
     r.reel.classList.add('visible');
 
-    // Animate: fast scroll, then decelerate to target
     const centerOffset = (r.winH / 2) - (r.itemH / 2);
     const targetIdx = cat.items.length * 5 + targets[ci];
     const targetTop = centerOffset - targetIdx * r.itemH;
 
-    // Stagger stop times for each reel (casino feel)
-    const duration = 1.5 + ci * 0.5;
-
-    r.reel.style.transition = `top ${duration}s cubic-bezier(0.12, 0.8, 0.3, 1)`;
-    // Nudge to start spinning from wherever
-    requestAnimationFrame(() => {
-      r.reel.style.top = `${targetTop}px`;
-    });
-
-    // Update highlight during spin animation
-    const spinInterval = setInterval(() => updateInView(ci), 50);
+    // Stagger both start and stop; vary duration per reel
+    const baseDuration = 1.4 + ci * 0.45 + Math.random() * 0.4;
+    const delay = startDelays[ci];
 
     setTimeout(() => {
-      clearInterval(spinInterval);
-      r.win.classList.remove('spinning');
-      r.win.classList.add('locked');
-      r.reel.style.transition = 'none';
+      r.reel.style.transition = `top ${baseDuration}s cubic-bezier(0.12, 0.8, 0.3, 1)`;
+      requestAnimationFrame(() => {
+        r.reel.style.top = `${targetTop}px`;
+      });
 
-      selections[ci] = cat.items[targets[ci]];
-      updateInView(ci);
+      const spinInterval = setInterval(() => updateInView(ci), 50);
 
-      const minput = document.getElementById(`filter-${ci}`);
-      minput.value = `${selections[ci].emoji} ${selections[ci].name}`;
-      minput.classList.add('has-selection');
+      setTimeout(() => {
+        clearInterval(spinInterval);
+        r.win.classList.remove('spinning');
+        r.win.classList.add('locked');
+        r.reel.style.transition = 'none';
 
-      // If last reel, finalize
-      if (ci === CATEGORIES.length - 1) {
-        spinning = false;
-        wrapper.classList.remove('disabled');
-        checkAllSelected();
-      }
-    }, duration * 1000 + 100);
+        selections[ci] = cat.items[targets[ci]];
+        updateInView(ci);
+
+        const minput = document.getElementById(`filter-${ci}`);
+        minput.value = `${selections[ci].emoji} ${selections[ci].name}`;
+        minput.classList.add('has-selection');
+
+        if (ci === CATEGORIES.length - 1) {
+          spinning = false;
+          wrapper.classList.remove('disabled');
+          checkAllSelected();
+        }
+      }, baseDuration * 1000 + 100);
+    }, delay);
   });
 }
 
