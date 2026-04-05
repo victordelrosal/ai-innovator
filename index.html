@@ -1456,6 +1456,289 @@
     .flip-timer { padding: 8px 10px; gap: 4px; border-radius: 12px; }
   }
 
+  /* ============ ADVANCED MODE TOGGLE ============ */
+  .mode-toggle-wrapper {
+    position: fixed;
+    top: 110px;
+    right: 24px;
+    z-index: 110;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 16px;
+    background: rgba(16, 16, 24, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    transition: all 0.4s;
+  }
+  .mode-toggle-wrapper:hover {
+    border-color: rgba(124, 77, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(124, 77, 255, 0.08);
+  }
+  .mode-toggle-wrapper.active {
+    border-color: rgba(0, 230, 118, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 230, 118, 0.08);
+  }
+  .mode-toggle-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    transition: color 0.4s;
+    white-space: nowrap;
+  }
+  .mode-toggle-wrapper.active .mode-toggle-label {
+    color: var(--green);
+  }
+
+  /* 3D Toggle Switch */
+  .toggle-track {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    border-radius: 14px;
+    cursor: pointer;
+    background:
+      linear-gradient(180deg, #1a1a24 0%, #252530 40%, #2a2a36 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.6),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.03),
+      0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+  }
+  .toggle-track.on {
+    background:
+      linear-gradient(180deg, #005a2e 0%, #00803f 40%, #009a4d 100%);
+    border-color: rgba(0, 230, 118, 0.2);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 40, 20, 0.5),
+      inset 0 -1px 2px rgba(0, 230, 118, 0.1),
+      0 0 16px rgba(0, 230, 118, 0.15),
+      0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  /* The knob */
+  .toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 40% 35%,
+        #f0f0f5 0%,
+        #d8d8e0 25%,
+        #b8b8c4 50%,
+        #9898a8 75%,
+        #787888 100%);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.5),
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.6),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .toggle-track.on .toggle-knob {
+    left: 26px;
+    background:
+      radial-gradient(circle at 40% 35%,
+        #ffffff 0%,
+        #e8e8f0 25%,
+        #d0d0dc 50%,
+        #b8b8c8 75%,
+        #a0a0b0 100%);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      0 0 12px rgba(0, 230, 118, 0.2),
+      0 1px 2px rgba(0, 0, 0, 0.3),
+      inset 0 1px 2px rgba(255, 255, 255, 0.7),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Specular highlight on knob */
+  .toggle-knob::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 20%;
+    width: 50%;
+    height: 35%;
+    background: radial-gradient(ellipse at 50% 50%,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 70%);
+    border-radius: 50%;
+    transform: rotate(-10deg);
+  }
+  /* Secondary reflection */
+  .toggle-knob::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 25%;
+    height: 18%;
+    background: radial-gradient(ellipse,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* Subtle groove/channel inside the track */
+  .toggle-track::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    transition: background 0.4s;
+  }
+  .toggle-track.on::before {
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .mode-toggle-wrapper {
+      top: 70px;
+      right: 12px;
+      padding: 7px 10px;
+      gap: 8px;
+      border-radius: 12px;
+    }
+    .mode-toggle-label { font-size: 0.52rem; }
+    .toggle-track { width: 44px; height: 24px; border-radius: 12px; }
+    .toggle-knob { width: 18px; height: 18px; top: 2px; left: 2px; }
+    .toggle-track.on .toggle-knob { left: 22px; }
+  }
+
+  /* ============ ADVANCED MODE ELEMENTS ============ */
+  .n-selector {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .n-selector.visible { display: flex; }
+  .n-selector-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .n-controls {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .n-btn {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    font-family: inherit;
+    line-height: 1;
+  }
+  .n-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    box-shadow: 0 0 16px rgba(124, 77, 255, 0.2);
+    color: #fff;
+  }
+  .n-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+  .n-display {
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: var(--green);
+    min-width: 64px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+  }
+
+  .grid-wrapper {
+    flex: 1;
+    min-width: 0;
+    display: none;
+  }
+  .grid-wrapper.visible { display: block; }
+  .category-headers {
+    display: grid;
+    grid-template-columns: 28px repeat(5, 1fr);
+    column-gap: 6px;
+    margin-bottom: 10px;
+  }
+  .cat-header {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  .candidates-grid {
+    display: grid;
+    grid-template-columns: 28px repeat(5, 1fr);
+    column-gap: 6px;
+    row-gap: 1px;
+    height: 240px;
+  }
+  .row-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text-dim);
+    min-height: 0;
+  }
+  .emoji-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    background: linear-gradient(180deg, rgba(18,18,28,0.95) 0%, rgba(22,22,31,0.95) 50%, rgba(18,18,28,0.95) 100%);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.35s;
+    user-select: none;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .emoji-cell.shuffling {
+    border-color: rgba(124, 77, 255, 0.35);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.3), 0 0 12px rgba(124, 77, 255, 0.1);
+  }
+  .emoji-cell.landed {
+    border-color: rgba(0, 230, 118, 0.25);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.2), 0 0 10px rgba(0, 230, 118, 0.08);
+  }
+  @keyframes cellBounce {
+    0% { transform: scale(1.25); }
+    50% { transform: scale(0.92); }
+    100% { transform: scale(1); }
+  }
+  .emoji-cell.landed .cell-content {
+    animation: cellBounce 0.3s ease-out;
+    display: inline-block;
+  }
+
   /* Page views footer */
   .page-views-footer {
     position: fixed;
@@ -1486,16 +1769,47 @@
   <div class="spot spot-7"></div>
 </div>
 
+<!-- Advanced Mode Toggle -->
+<div class="mode-toggle-wrapper" id="modeToggleWrapper">
+  <span class="mode-toggle-label">Advanced</span>
+  <div class="toggle-track" id="modeToggle" onclick="toggleAdvancedMode()">
+    <div class="toggle-knob"></div>
+  </div>
+</div>
+
 <div class="container" id="mainView">
   <div class="header">
     <h1>The AI Innovator</h1>
     <p>Select your ingredients or spin the reels. Then hit Go.</p>
   </div>
 
+  <!-- N-selector for advanced mode (hidden by default) -->
+  <div class="n-selector" id="nSelector">
+    <span class="n-selector-label">Candidates</span>
+    <div class="n-controls">
+      <button class="n-btn" id="nMinus" onclick="changeN(-1)">&#8722;</button>
+      <div class="n-display" id="nDisplay">5</div>
+      <button class="n-btn" id="nPlus" onclick="changeN(1)">+</button>
+    </div>
+  </div>
+
   <div class="machine-row">
     <div class="slots-wrapper" id="slotsWrapper">
       <div class="center-bar" id="centerBar"></div>
       <div class="slots-grid" id="slotsGrid"></div>
+    </div>
+
+    <!-- Grid wrapper for advanced mode (hidden by default) -->
+    <div class="grid-wrapper" id="gridWrapper">
+      <div class="category-headers" id="categoryHeaders">
+        <div></div>
+        <div class="cat-header">Country</div>
+        <div class="cat-header">Fruit</div>
+        <div class="cat-header">Animal</div>
+        <div class="cat-header">Action</div>
+        <div class="cat-header">Wild Card</div>
+      </div>
+      <div class="candidates-grid" id="candidatesGrid"></div>
     </div>
 
     <div class="lever-wrapper" id="leverWrapper" onclick="pullLever()">
@@ -2375,6 +2689,11 @@ function selectManual(catIdx, itemIdx) {
   checkAllSelected();
 }
 
+// ============ ADVANCED MODE STATE ============
+let advancedMode = false;
+let numCandidates = 5;
+let candidateSelections = [];
+
 function pullLever() {
   if (spinning) return;
   const arm = document.getElementById('leverArm');
@@ -2384,8 +2703,8 @@ function pullLever() {
   void arm.offsetWidth; // reflow
   arm.classList.add('pulled');
 
-  // Start reels after the lever reaches the bottom (250ms into animation)
-  setTimeout(() => spinAll(), 250);
+  // Dispatch to correct spin function based on mode
+  setTimeout(() => advancedMode ? spinAllGrid() : spinAll(), 250);
 }
 
 const spinSound = new Audio('spin.mp3');
@@ -2464,10 +2783,159 @@ function checkAllSelected() {
   }
 }
 
-function generatePrompt() {
-  const [country, fruit, animal, action, wildCard] = selections;
+// ============ ADVANCED MODE: GRID FUNCTIONS ============
 
-  const prompt = `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one. IMPORTANT: Save every step's output as a separate file in the project folder so the full creative trail is preserved (see step h for the file structure).
+function initGrid() {
+  candidateSelections = [];
+  for (let r = 0; r < numCandidates; r++) {
+    candidateSelections.push(CATEGORIES.map(cat =>
+      cat.items[Math.floor(Math.random() * cat.items.length)]
+    ));
+  }
+  renderGrid();
+  allLanded = false;
+  document.getElementById('goSection').classList.remove('visible');
+}
+
+function renderGrid() {
+  const grid = document.getElementById('candidatesGrid');
+  grid.innerHTML = '';
+  grid.style.gridTemplateRows = `repeat(${numCandidates}, 1fr)`;
+
+  const isMobile = window.innerWidth <= 640;
+  const gridH = isMobile ? 140 : 240;
+  const cellH = (gridH - (numCandidates - 1)) / numCandidates;
+  const emojiSize = Math.max(0.7, Math.min(2.4, cellH * 0.55 / 16));
+  const numSize = Math.max(0.45, Math.min(0.8, cellH * 0.3 / 16));
+
+  for (let r = 0; r < numCandidates; r++) {
+    const numEl = document.createElement('div');
+    numEl.className = 'row-num';
+    numEl.textContent = r + 1;
+    numEl.style.fontSize = numSize + 'rem';
+    grid.appendChild(numEl);
+    for (let c = 0; c < 5; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'emoji-cell';
+      cell.id = `cell-${r}-${c}`;
+      cell.style.fontSize = emojiSize + 'rem';
+      cell.innerHTML = `<span class="cell-content">${candidateSelections[r][c].emoji}</span>`;
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function changeN(delta) {
+  const newN = numCandidates + delta;
+  if (newN < 2 || newN > 12) return;
+  numCandidates = newN;
+  document.getElementById('nDisplay').textContent = numCandidates;
+  document.getElementById('nMinus').disabled = numCandidates <= 2;
+  document.getElementById('nPlus').disabled = numCandidates >= 12;
+  initGrid();
+}
+
+let allLanded = false;
+
+function spinAllGrid() {
+  if (spinning) return;
+  spinning = true;
+  allLanded = false;
+  spinSound.currentTime = 0;
+  spinSound.play().catch(() => {});
+
+  document.getElementById('leverWrapper').classList.add('disabled');
+  document.getElementById('spinBtnMobile').disabled = true;
+  document.getElementById('goSection').classList.remove('visible');
+
+  let landedCount = 0;
+  const totalCells = numCandidates * 5;
+
+  for (let r = 0; r < numCandidates; r++) {
+    for (let c = 0; c < 5; c++) {
+      const targetIdx = Math.floor(Math.random() * CATEGORIES[c].items.length);
+      candidateSelections[r][c] = CATEGORIES[c].items[targetIdx];
+
+      const cell = document.getElementById(`cell-${r}-${c}`);
+      cell.classList.remove('landed');
+      cell.classList.add('shuffling');
+
+      const delay = r * 100 + c * 70 + Math.random() * 80;
+      const duration = 700 + r * 80 + Math.random() * 250;
+
+      setTimeout(() => {
+        const cat = CATEGORIES[c];
+        const interval = setInterval(() => {
+          const randIdx = Math.floor(Math.random() * cat.items.length);
+          cell.querySelector('.cell-content').textContent = cat.items[randIdx].emoji;
+        }, 55);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          cell.querySelector('.cell-content').textContent = candidateSelections[r][c].emoji;
+          cell.classList.remove('shuffling');
+          cell.classList.add('landed');
+
+          landedCount++;
+          if (landedCount === totalCells) {
+            spinning = false;
+            allLanded = true;
+            document.getElementById('leverWrapper').classList.remove('disabled');
+            document.getElementById('spinBtnMobile').disabled = false;
+            showGoSection();
+          }
+        }, duration);
+      }, delay);
+    }
+  }
+}
+
+function showGoSection() {
+  const goSection = document.getElementById('goSection');
+  goSection.classList.add('visible');
+  const preview = document.getElementById('selectionsPreview');
+  // Show first candidate's emojis as preview
+  preview.innerHTML = candidateSelections[0].map(s => s.emoji).join('  ');
+}
+
+function generatePrompt() {
+  let prompt;
+
+  if (advancedMode) {
+    prompt = generateAdvancedPrompt();
+  } else {
+    const [country, fruit, animal, action, wildCard] = selections;
+    prompt = generateStandardPrompt(country, fruit, animal, action, wildCard);
+  }
+
+  // Store for modal access
+  window._generatedPrompt = prompt;
+  window._generatedBrief = null;
+
+  // Hide toggle when entering prompt view
+  document.getElementById('modeToggleWrapper').style.display = 'none';
+
+  // Press the button down, then transition
+  const goBtn = document.getElementById('goBtn');
+  goBtn.classList.add('pressed');
+  goBtn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    document.getElementById('mainView').style.display = 'none';
+    document.getElementById('promptView').style.display = 'flex';
+    // Set timer to correct duration for this mode
+    timerSeconds = getTimerDuration();
+    updateTimerDisplay();
+    document.getElementById('flipTimerWrapper').classList.add('active');
+    goBtn.classList.remove('pressed');
+    goBtn.style.pointerEvents = '';
+    window._generatedBrief = advancedMode ? buildAdvancedBriefHTML() : buildStandardBriefHTML(...selections);
+    setTimeout(updateChevrons, 100);
+  }, 650);
+}
+
+function generateStandardPrompt(country, fruit, animal, action, wildCard) {
+  return `INSTRUCTIONS: Execute each step in sequence, ensuring that the output of each step is the input for the next one. IMPORTANT: Save every step's output as a separate file in the project folder so the full creative trail is preserved (see step h for the file structure).
 
 (a) Based on these parameters:
 
@@ -2491,7 +2959,7 @@ write a short story in a single paragraph.
 
 (g) Design a very professional business plan and a marketing campaign. Pitch this to investors (including reps from YCombinator, Tech Stars, Dogpatch Labs, and Blackrock Capital). Create the slides for this (html) and open them in a style aligned with the landing page. The slides must be visually striking, not text-heavy: use bold single-line statements, large hero numbers, real-world photos (via Unsplash or Pexels URLs), simple data visualisations built in CSS, and pull the same colour palette, typography, and design language from the landing page. Each slide should feel like a full-bleed magazine spread, not a bullet-point document. Minimise words per slide; maximise visual impact. When relevant, add progressive reveal of key elements within slides. Title the last slide 'Lessons Learned' and write 6 or 7 bullet points reflecting on the whole experience. Give it a favicon.
 
-(h) Create a local project folder for all deliverables. Save each step as a separate file so the full innovation trail is preserved:
+(h) Create the project folder at ~/ai-innovator/projects/[ProjectName]/ (create directories if needed). ProjectName should be the name of your solution. Save each step as a separate file so the full innovation trail is preserved:
 
   01-story.md          (the short story from step a)
   02-research-question.md  (the research question from step b)
@@ -2503,28 +2971,88 @@ write a short story in a single paragraph.
   07-business-plan.md      (the business plan and marketing campaign from step g)
 
 Commit to corresponding GitHub repository then publish to a live GitHub Page and open it. Give it a favicon. (Skip this step only if you do not have these skills or permissions).`;
-
-  // Store for modal access
-  window._generatedPrompt = prompt;
-  window._generatedBrief = null;
-
-  // Press the button down, then transition
-  const goBtn = document.getElementById('goBtn');
-  goBtn.classList.add('pressed');
-  goBtn.style.pointerEvents = 'none';
-
-  setTimeout(() => {
-    document.getElementById('mainView').style.display = 'none';
-    document.getElementById('promptView').style.display = 'flex';
-    document.getElementById('flipTimerWrapper').classList.add('active');
-    goBtn.classList.remove('pressed');
-    goBtn.style.pointerEvents = '';
-    window._generatedBrief = buildBriefHTML(country, fruit, animal, action, wildCard);
-    setTimeout(updateChevrons, 100);
-  }, 650);
 }
 
-function buildBriefHTML(country, fruit, animal, action, wildCard) {
+function generateAdvancedPrompt() {
+  let candidateList = '';
+  for (let r = 0; r < numCandidates; r++) {
+    const sels = candidateSelections[r];
+    candidateList += `CANDIDATE ${r + 1}: ${sels.map(s => s.emoji + ' ' + s.name).join('  |  ')}\n`;
+  }
+
+  return `INSTRUCTIONS: Execute this Natural Selection Pipeline. You will generate ${numCandidates} candidate concepts, evaluate them in a competitive arena, and build ONLY the winning concept.
+
+IMPORTANT: Save ALL project files to ~/ai-innovator/projects/[ProjectName]/ (create directories if needed). The ProjectName should be the name of the WINNING concept.
+
+For each candidate, the fifth parameter is the Wild Card.
+
+${'='.repeat(50)}
+ PHASE 1: POPULATION GENERATION
+ Generate ${numCandidates} independent candidates
+${'='.repeat(50)}
+
+${candidateList}
+For EACH candidate, execute steps (a) through (e):
+
+(a) Write a short story in a single paragraph weaving all 5 parameters together.
+
+(b) Transform that story into an academic research question.
+
+(c) Research and diagnose a real problem or opportunity. Output a clear problem statement with a narrow customer/user segment in any sector (public or private).
+
+(d) Design a solution (product, service, or hybrid). Define the provider (startup, government agency, corporation, NGO, etc.).
+
+(e) Write product specs: features, architecture, user flows, brand guidelines, and an MVP development timeline.
+
+Save each candidate's pipeline as separate files:
+  candidate-1/01-story.md
+  candidate-1/02-research-question.md
+  candidate-1/03-problem-statement.md
+  candidate-1/04-solution-design.md
+  candidate-1/05-design-specs.md
+  (repeat for each candidate)
+
+${'='.repeat(50)}
+ PHASE 2: THE ARENA
+ Dragons' Den x YC Demo Day
+${'='.repeat(50)}
+
+(f) SCORECARD: Rate each candidate 1-10 on five criteria:
+  - Market viability: real demand? paying users?
+  - Feasibility: can a small team actually build this?
+  - Innovation: novel or just another clone?
+  - Impact: does it meaningfully improve lives?
+  - Wow factor: would a VC lean forward?
+
+(g) HEAD-TO-HEAD: "If you had $100k and 90 days, which ONE would you fund and why?" Provide explicit tradeoff analysis between the top 2-3 candidates.
+
+(h) VERDICT: Declare one winner. Explain:
+  - Why it won
+  - Why each runner-up lost
+  - What makes the winner defensible
+
+Save as: arena-report.md
+
+${'='.repeat(50)}
+ PHASE 3: BUILD THE WINNER
+ Only the winning concept gets built.
+${'='.repeat(50)}
+
+(i) Create a world-class landing page for the winner (output as HTML file). Include 1-3 real-world photos. Top-notch design. Open when finished.
+
+(j) Design a professional business plan and marketing campaign. Create an investor pitch deck (10 slides, HTML) for YCombinator, TechStars, Dogpatch Labs, and BlackRock Capital. Slides must be visually striking: bold single-line statements, large hero numbers, real-world photos (via Unsplash or Pexels URLs), CSS data visualisations. Same design language as the landing page. Minimise words per slide; maximise visual impact. Progressive reveal where relevant. Title the last slide 'Lessons Learned' with 6-7 bullet points reflecting on the entire experience including the natural selection process. Give it a favicon.
+
+(k) Organise all deliverables in the project folder:
+  candidate-1/ through candidate-${numCandidates}/ (each with steps a-e files)
+  arena-report.md
+  index.html (winning concept's landing page)
+  pitch.html (pitch deck)
+  business-plan.md
+
+Commit to GitHub, publish to GitHub Pages, and open. Give it a favicon. (Skip this step only if you do not have these skills or permissions.)`;
+}
+
+function buildStandardBriefHTML(country, fruit, animal, action, wildCard) {
   const briefHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2689,7 +3217,7 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
       <div class="step-marker">h</div>
       <div class="step-content">
         <div class="step-title">Publish Online</div>
-        <div class="step-desc">Organise all deliverables into a project folder. Save each step as a separate file (01-story.md, 02-research-question.md, 03-problem-statement.md, 04-solution-design.md, 05-prototype.md, index.html, pitch.html, 07-business-plan.md) so the full innovation trail is preserved. Publish to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
+        <div class="step-desc">Create the project folder at ~/ai-innovator/projects/[ProjectName]/ (create directories if needed). Save each step as a separate file (01-story.md, 02-research-question.md, 03-problem-statement.md, 04-solution-design.md, 05-prototype.md, index.html, pitch.html, 07-business-plan.md) so the full innovation trail is preserved. Publish to a live URL (GitHub Pages, Netlify, or similar). Share the link.</div>
         <span class="step-tag tag-deliver">Deliver</span>
       </div>
     </div>
@@ -2703,6 +3231,126 @@ function buildBriefHTML(country, fruit, animal, action, wildCard) {
 </html>`;
 
   return briefHTML;
+}
+
+function buildAdvancedBriefHTML() {
+  let candidateTableRows = '';
+  for (let r = 0; r < numCandidates; r++) {
+    const sels = candidateSelections[r];
+    candidateTableRows += '<tr>' +
+      '<td style="font-weight:700;color:#888;text-align:center;padding:8px 4px;">' + (r + 1) + '</td>' +
+      sels.map(s => '<td style="text-align:center;padding:8px 4px;"><span style="font-size:28px;">' + s.emoji + '</span><br><span style="font-size:11px;color:#888;">' + s.name + '</span></td>').join('') +
+      '</tr>';
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Innovator - Natural Selection Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; min-height: 100vh; font-family: 'Inter', -apple-system, sans-serif; color: #1a1a2e; background: #fff; }
+  body { max-width: 1050px; margin: 0 auto; padding: 0 48px 48px 48px; }
+  .topbar { height: 8px; background: linear-gradient(90deg, #7c4dff, #00e676); margin: 0 -48px 28px -48px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 3px solid #1a1a2e; }
+  .header-left h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
+  .header-left .subtitle { font-size: 17px; color: #666; font-weight: 400; margin-top: 3px; }
+  .header-left .version { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: #f0e6ff; color: #7c4dff; margin-top: 4px; letter-spacing: 0.08em; }
+  .header-right { text-align: right; font-size: 16px; color: #888; line-height: 1.5; }
+  table.candidates { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+  table.candidates th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #999; padding: 6px 4px; border-bottom: 1px solid #ddd; }
+  table.candidates td { border-bottom: 1px solid #eee; }
+  .intro { font-size: 16px; line-height: 1.5; color: #333; margin-bottom: 20px; }
+  .phase { margin-bottom: 20px; }
+  .phase-header { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 14px; border-radius: 8px; margin-bottom: 10px; }
+  .phase-1 { background: #f0e6ff; color: #5a2dcc; }
+  .phase-2 { background: #fff3e0; color: #e65100; }
+  .phase-3 { background: #e8f5e9; color: #2e7d32; }
+  .steps { display: flex; flex-direction: column; gap: 6px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-marker { width: 30px; height: 30px; border-radius: 50%; background: #1a1a2e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-content { flex: 1; }
+  .step-title { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+  .step-desc { font-size: 14px; color: #444; line-height: 1.5; }
+  .footer { margin-top: 20px; padding-top: 12px; border-top: 1px solid #ddd; display: flex; justify-content: space-between; }
+  .footer-left { font-size: 15px; color: #999; }
+  .footer-right { font-size: 15px; color: #999; font-style: italic; }
+  @media (max-width: 640px) {
+    body { padding: 0 16px 24px 16px; }
+    .topbar { margin: 0 -16px 16px -16px; }
+    .header { flex-direction: column; gap: 12px; }
+    .header-left h1 { font-size: 24px; }
+    .header-right { text-align: left; font-size: 14px; }
+    table.candidates { font-size: 12px; }
+    .footer { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+  <div class="topbar"></div>
+  <div class="header">
+    <div class="header-left">
+      <h1>The AI Innovator</h1>
+      <div class="subtitle">Natural Selection Edition</div>
+      <span class="version">ADVANCED</span>
+    </div>
+    <div class="header-right">
+      Date: ${new Date().toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}<br>
+      Candidates: ${numCandidates}<br>
+      Format: Individual or Team of 2
+    </div>
+  </div>
+
+  <table class="candidates">
+    <thead>
+      <tr>
+        <th>#</th><th>Country</th><th>Fruit</th><th>Animal</th><th>Action</th><th>Wild Card</th>
+      </tr>
+    </thead>
+    <tbody>${candidateTableRows}</tbody>
+  </table>
+
+  <div class="intro">
+    <strong>Your challenge:</strong> ${numCandidates} random parameter sets enter the innovation pipeline. Each candidate progresses through story, research, problem, solution, and design specs. Then they enter The Arena: a competitive evaluation modelled on Dragons' Den and YC Demo Day. Only the strongest concept survives to be fully built, pitched, and published.
+  </div>
+
+  <div class="phase">
+    <div class="phase-header phase-1">Phase 1: Population Generation</div>
+    <div class="steps">
+      <div class="step"><div class="step-marker">a</div><div class="step-content"><div class="step-title">Short Story</div><div class="step-desc">For each candidate: write a single-paragraph story weaving all 5 parameters together.</div></div></div>
+      <div class="step"><div class="step-marker">b</div><div class="step-content"><div class="step-title">Research Question</div><div class="step-desc">Transform each story into a genuine academic research question.</div></div></div>
+      <div class="step"><div class="step-marker">c</div><div class="step-content"><div class="step-title">Problem Statement</div><div class="step-desc">Research and diagnose a real problem or opportunity. Define a narrow customer/user segment.</div></div></div>
+      <div class="step"><div class="step-marker">d</div><div class="step-content"><div class="step-title">Solution Design</div><div class="step-desc">Design a solution (product, service, or hybrid). Define the provider.</div></div></div>
+      <div class="step"><div class="step-marker">e</div><div class="step-content"><div class="step-title">Product Specs</div><div class="step-desc">Features, architecture, user flows, brand guidelines, MVP timeline.</div></div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header phase-2">Phase 2: The Arena</div>
+    <div class="steps">
+      <div class="step"><div class="step-marker">f</div><div class="step-content"><div class="step-title">Scorecard</div><div class="step-desc">Rate each candidate 1-10 on: market viability, feasibility, innovation, impact, wow factor.</div></div></div>
+      <div class="step"><div class="step-marker">g</div><div class="step-content"><div class="step-title">Head-to-Head</div><div class="step-desc">"If you had $100k and 90 days, which ONE would you fund and why?" Tradeoff analysis of top 2-3.</div></div></div>
+      <div class="step"><div class="step-marker">h</div><div class="step-content"><div class="step-title">Verdict</div><div class="step-desc">Declare one winner. Why it won, why runners-up lost, what makes the winner defensible.</div></div></div>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header phase-3">Phase 3: Build the Winner</div>
+    <div class="steps">
+      <div class="step"><div class="step-marker">i</div><div class="step-content"><div class="step-title">Landing Page</div><div class="step-desc">World-class HTML landing page with real imagery, value proposition, and CTA.</div></div></div>
+      <div class="step"><div class="step-marker">j</div><div class="step-content"><div class="step-title">Business Plan + Pitch Deck</div><div class="step-desc">Business plan, marketing campaign, and 10-slide investor deck for YCombinator, TechStars, Dogpatch Labs, BlackRock Capital. Visually striking: bold statements, hero numbers, photos, data viz. Final slide: lessons learned including reflections on the natural selection process.</div></div></div>
+      <div class="step"><div class="step-marker">k</div><div class="step-content"><div class="step-title">Publish</div><div class="step-desc">Organise all deliverables to ~/ai-innovator/projects/[ProjectName]/. Publish to GitHub Pages.</div></div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">The AI Innovator &middot; ${new Date().toLocaleDateString('en-IE')}</div>
+    <div class="footer-right">"${numCandidates} concepts enter. One survives. How long would it take you?"</div>
+  </div>
+</body>
+</html>`;
 }
 
 function openModal(type) {
@@ -2810,14 +3458,20 @@ function exportBriefPdf() {
 function goBack() {
   document.getElementById('mainView').style.display = 'flex';
   document.getElementById('promptView').style.display = 'none';
-  // Preserve selections and reel positions; user can spin again or tweak
-  if (selections.every(s => s !== null)) {
-    document.getElementById('goSection').classList.add('visible');
+  // Show toggle again
+  document.getElementById('modeToggleWrapper').style.display = '';
+  // Preserve selections; user can spin again or tweak
+  if (advancedMode) {
+    if (allLanded) document.getElementById('goSection').classList.add('visible');
+  } else {
+    if (selections.every(s => s !== null)) {
+      document.getElementById('goSection').classList.add('visible');
+    }
   }
-  // Reset and hide timer
+  // Reset and hide timer (20min for advanced, 12min for standard)
   clearInterval(timerInterval);
   timerRunning = false;
-  timerSeconds = TIMER_DURATION;
+  timerSeconds = advancedMode ? 20 * 60 : 12 * 60;
   updateTimerDisplay();
   const el = document.getElementById('flipTimer');
   el.classList.remove('running', 'paused', 'expired');
@@ -2828,7 +3482,7 @@ function goBack() {
 let timerInterval = null;
 let timerSeconds = 12 * 60;
 let timerRunning = false;
-const TIMER_DURATION = 12 * 60;
+function getTimerDuration() { return advancedMode ? 20 * 60 : 12 * 60; }
 
 function padTwo(n) { return String(n).padStart(2, '0'); }
 
@@ -2844,7 +3498,7 @@ function toggleTimer() {
 
   if (timerSeconds <= 0) {
     // Reset
-    timerSeconds = TIMER_DURATION;
+    timerSeconds = getTimerDuration();
     updateTimerDisplay();
     el.classList.remove('expired', 'running', 'paused');
     timerRunning = false;
@@ -2935,6 +3589,50 @@ async function trackPageView() {
   }
 }
 trackPageView();
+
+// Advanced mode toggle
+function toggleAdvancedMode() {
+  const track = document.getElementById('modeToggle');
+  const wrapper = document.getElementById('modeToggleWrapper');
+
+  advancedMode = !advancedMode;
+
+  if (advancedMode) {
+    track.classList.add('on');
+    wrapper.classList.add('active');
+    // Hide standard slots, show grid
+    document.getElementById('slotsWrapper').style.display = 'none';
+    document.getElementById('gridWrapper').classList.add('visible');
+    document.getElementById('nSelector').classList.add('visible');
+    // Update header
+    document.querySelector('#mainView .header h1').textContent = 'The AI Innovator';
+    document.querySelector('#mainView .header p').textContent = 'Generate multiple candidates. Only the strongest survives.';
+    // Hide standard filter inputs
+    document.querySelectorAll('.filter-input').forEach(el => el.style.display = 'none');
+    // Hide go section until grid is spun
+    document.getElementById('goSection').classList.remove('visible');
+    // Initialise grid
+    initGrid();
+  } else {
+    track.classList.remove('on');
+    wrapper.classList.remove('active');
+    // Show standard slots, hide grid
+    document.getElementById('slotsWrapper').style.display = '';
+    document.getElementById('gridWrapper').classList.remove('visible');
+    document.getElementById('nSelector').classList.remove('visible');
+    // Restore header
+    document.querySelector('#mainView .header h1').textContent = 'The AI Innovator';
+    document.querySelector('#mainView .header p').textContent = 'Select your ingredients or spin the reels. Then hit Go.';
+    // Show filter inputs
+    document.querySelectorAll('.filter-input').forEach(el => el.style.display = '');
+    // Restore go section state
+    if (selections.every(s => s !== null)) {
+      document.getElementById('goSection').classList.add('visible');
+    } else {
+      document.getElementById('goSection').classList.remove('visible');
+    }
+  }
+}
 
 // Init
 buildSlots();

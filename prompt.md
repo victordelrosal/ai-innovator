@@ -11,7 +11,7 @@ fifth parameter [surprise me, you choose this]--must represent with an emoji too
 
 write a short story in a single paragraph.
 
-(b) Take that short story and transform it into a research question for a Masters dissertation.
+(b) Take that short story and transform it into an academic research question.
 
 (c) Conduct brief research focused on diagnosing a problem or opportunity. The output here will be a clear problem statement that includes a narrow customer/user segment in any sector (public or private)
 
