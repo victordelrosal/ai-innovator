@@ -1935,6 +1935,18 @@
           </div>
           <span class="showcase-name">Glöd</span>
         </a>
+        <a class="showcase-item" href="https://victordelrosal.com/intersect/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/intersect.jpg" alt="Intersect" loading="lazy">
+          </div>
+          <span class="showcase-name">Intersect</span>
+        </a>
+        <a class="showcase-item" href="https://victordelrosal.com/nutrir/" target="_blank">
+          <div class="showcase-thumb">
+            <img src="thumbs/nutrir.jpg" alt="Nutrir" loading="lazy">
+          </div>
+          <span class="showcase-name">Nutrir</span>
+        </a>
       </div>
     </div>
   </div>
@@ -2893,9 +2905,8 @@ function spinAllGrid() {
 function showGoSection() {
   const goSection = document.getElementById('goSection');
   goSection.classList.add('visible');
-  const preview = document.getElementById('selectionsPreview');
-  // Show first candidate's emojis as preview
-  preview.innerHTML = candidateSelections[0].map(s => s.emoji).join('  ');
+  // Hide the preview row in advanced mode since the grid already shows everything
+  document.getElementById('selectionsPreview').style.display = 'none';
 }
 
 function generatePrompt() {
@@ -3607,8 +3618,9 @@ function toggleAdvancedMode() {
     // Update header
     document.querySelector('#mainView .header h1').textContent = 'The AI Innovator';
     document.querySelector('#mainView .header p').textContent = 'Generate multiple candidates. Only the strongest survives.';
-    // Hide standard filter inputs
+    // Hide standard filter inputs and selections preview
     document.querySelectorAll('.filter-input').forEach(el => el.style.display = 'none');
+    document.getElementById('selectionsPreview').style.display = 'none';
     // Hide go section until grid is spun
     document.getElementById('goSection').classList.remove('visible');
     // Initialise grid
@@ -3623,8 +3635,9 @@ function toggleAdvancedMode() {
     // Restore header
     document.querySelector('#mainView .header h1').textContent = 'The AI Innovator';
     document.querySelector('#mainView .header p').textContent = 'Select your ingredients or spin the reels. Then hit Go.';
-    // Show filter inputs
+    // Show filter inputs and selections preview
     document.querySelectorAll('.filter-input').forEach(el => el.style.display = '');
+    document.getElementById('selectionsPreview').style.display = '';
     // Restore go section state
     if (selections.every(s => s !== null)) {
       document.getElementById('goSection').classList.add('visible');
