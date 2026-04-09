@@ -3650,6 +3650,19 @@ function toggleAdvancedMode() {
 // Init
 buildSlots();
 window.addEventListener('resize', positionCenterBar);
+
+// Auto-spin mode (for embedding in presentations)
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('autospin') === '1') {
+    // Auto-spin after a short delay, then repeat
+    function autoSpin() {
+      if (!spinning) pullLever();
+      setTimeout(autoSpin, 6000);
+    }
+    setTimeout(autoSpin, 1500);
+  }
+})();
 </script>
 </body>
 </html>
